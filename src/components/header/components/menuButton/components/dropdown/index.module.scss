@@ -1,0 +1,23 @@
+.dropdownWrapper {
+    position: absolute;
+    top: -10px;
+    left: -6px;
+    width: 375px;
+    height: max-content;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+    border-radius: 0 0 20px 20px;
+    backdrop-filter: blur(3px);
+
+    li {
+        padding: 3px 5px;
+        text-align: center;
+        font-size: 30px;
+        line-height: 34px;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+        }
+    }
+}

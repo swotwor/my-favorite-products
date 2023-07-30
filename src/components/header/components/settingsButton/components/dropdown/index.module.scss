@@ -1,0 +1,16 @@
+.dropdownWrapperSettings {
+    position: absolute;
+    top: -10px;
+    right: -6px;
+    width: 375px;
+    height: max-content;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+    border-radius: 0 0 20px 20px;
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    line-height: 30px;
+    font-weight: 700;
+}

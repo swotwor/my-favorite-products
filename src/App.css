@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&family=Sofia+Sans+Extra+Condensed:wght@200;300;400;500;600;700;800;900;1000&display=swap');
+
+body {
+    background-image: url('./assets/backgroundImage.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+}
+
+.mainWrapper {
+    font-family: 'Sofia Sans Extra Condensed', sans-serif;
+    width: 375px;
+    margin: 0 auto;
+    height: 100%;
+}

@@ -19,19 +19,19 @@ const ProductAdd = () => {
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
     
     const handleClickOnButton = () => {
-        if(allValuesFilled) {
-            addNewProduct(stateProduct);
-            setStateProduct({
-                img: '',
-                cost: '',
-                title: '',
-                location: '',
-                description: '',
-            })
-        } else {
-            alert('Не всі поля заповнені')
-        }
-
+        // if(allValuesFilled) {
+        //     addNewProduct(stateProduct);
+        //     setStateProduct({
+        //         img: '',
+        //         cost: '',
+        //         title: '',
+        //         location: '',
+        //         description: '',
+        //     })
+        // } else {
+        //     alert('Не всі поля заповнені')
+        // }
+        
         getCurrentAccount();
     };
 

@@ -4,14 +4,15 @@ import AllProduct from './components/allProduct/AllProduct';
 import ProductAdd from './components/productAdd/ProductAdd';
 import ProductCard from './components/productCard/ProductCard';
 import { useEffect } from 'react';
-import { getPoducts } from './logic/logic';
 import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
+import { getPoducts, getUserToken } from './logic/logic';
 
 const App = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        getUserToken();
         getPoducts(dispatch);
     }, []);
 

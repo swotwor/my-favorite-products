@@ -19,15 +19,31 @@ export async function getPoducts(dispatch) {
 }
 
 export async function getCurrentAccount() {
+    // try {
+    //     const response = await ky
+    //         .post('https://https://api.dropboxapi.com/2/openid/userinfo', {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 Authorization:
+    //                     'Bearer sl.BjLLCBLi0q93Fk7xeOE01jSfRdjo0ys3Z3BeUegO5X2Z62pHBlnLrA8fzx3FncpVErVVEcnoCzkI87BL1-I_qFpxAXAi4Z6fZJ810YcOpBWouCD3Tw2HqLIqvDKbruEzJbe86RAwFMar',
+    //             },
+    //             // json: {},
+    //         })
+    //         .json();
+    //     console.log(response);
+    // } catch (error) {
+    //     console.log('Error', error);
+    // }
     try {
         const response = await ky
-            .post('https://https://api.dropboxapi.com/2/openid/userinfo', {
+            .post('https://api.dropboxapi.com/2/files/list_folder', {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization:
-                        'Bearer sl.BjLLCBLi0q93Fk7xeOE01jSfRdjo0ys3Z3BeUegO5X2Z62pHBlnLrA8fzx3FncpVErVVEcnoCzkI87BL1-I_qFpxAXAi4Z6fZJ810YcOpBWouCD3Tw2HqLIqvDKbruEzJbe86RAwFMar',
+                        'Bearer sl.BjPN29c70UIWsxn40MzpjEq3yM8g_oj4sRhzrzxdtBuz115FMXy8JNqhf5i6dXts4OE_yO_VSX-StQonuyZt4mVl4v4aV3WvaN88ibUWP7YdDkY-7SU5o0rmGLVSWcS7lDdjnyseDAYv',
                 },
-                // json: {},
+                // body: {},
+                json: {"path": ""},
             })
             .json();
         console.log(response);

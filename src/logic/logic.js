@@ -21,19 +21,52 @@ export async function getPoducts(dispatch) {
 export async function getCurrentAccount() {
     // try {
     //     const response = await ky
-    //         .post('https://https://api.dropboxapi.com/2/openid/userinfo', {
+    //         .post('https://api.dropboxapi.com/2/files/list_folder', {
     //             headers: {
     //                 'Content-Type': 'application/json',
     //                 Authorization:
-    //                     'Bearer sl.BjLLCBLi0q93Fk7xeOE01jSfRdjo0ys3Z3BeUegO5X2Z62pHBlnLrA8fzx3FncpVErVVEcnoCzkI87BL1-I_qFpxAXAi4Z6fZJ810YcOpBWouCD3Tw2HqLIqvDKbruEzJbe86RAwFMar',
+    //                     `Bearer ${document.cookie.split(';')[0].split('=')[1]}`,
     //             },
-    //             // json: {},
+    //             // body: {},
+    //             json: {"path": ""},
     //         })
     //         .json();
     //     console.log(response);
     // } catch (error) {
     //     console.log('Error', error);
     // }
+    try {
+        const response = await ky
+            .post(
+                'https://api.dropboxapi.com/2/sharing/create_shared_link_with_setting',
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${
+                            document.cookie.split(';')[0].split('=')[1]
+                        }`,
+                    },
+                    // body: {},
+                    mode: 'no-cors',
+                    json: {
+                        path: 'l_ekx9pmarYAAAAAAAAABw',
+                        settings: {
+                            requested_visibility: { '.tag': 'public' },
+                            audience: { '.tag': 'public' },
+                            access: { '.tag': 'viewer' },
+                            short_url: true,
+                        },
+                    },
+                }
+            )
+            .json();
+        console.log(response);
+    } catch (error) {
+        console.log('Error', error);
+    }
+}
+
+export async function uploadFile() {
     try {
         const response = await ky
             .post('https://api.dropboxapi.com/2/files/list_folder', {
@@ -43,7 +76,13 @@ export async function getCurrentAccount() {
                         'Bearer sl.BjPN29c70UIWsxn40MzpjEq3yM8g_oj4sRhzrzxdtBuz115FMXy8JNqhf5i6dXts4OE_yO_VSX-StQonuyZt4mVl4v4aV3WvaN88ibUWP7YdDkY-7SU5o0rmGLVSWcS7lDdjnyseDAYv',
                 },
                 // body: {},
-                json: {"path": ""},
+                json: {
+                    path: '',
+                    mode: 'add',
+                    mute: false,
+                    autorename: false,
+                    strict_conflict: false,
+                },
             })
             .json();
         console.log(response);

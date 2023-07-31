@@ -33,6 +33,9 @@ const ProductAdd = () => {
         // }
         
         getCurrentAccount();
+        // const cookies = document.cookie.split(';')[0].split('=')[1];
+        // console.log(cookies)
+
     };
 
     return (

@@ -38,7 +38,7 @@ export async function getCurrentAccount() {
     try {
         const response = await ky
             .post(
-                'https://api.dropboxapi.com/2/sharing/create_shared_link_with_setting',
+                'https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings',
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -46,15 +46,13 @@ export async function getCurrentAccount() {
                             document.cookie.split(';')[0].split('=')[1]
                         }`,
                     },
-                    // body: {},
-                    mode: 'no-cors',
                     json: {
-                        path: 'l_ekx9pmarYAAAAAAAAABw',
+                        path: '/photo.jpg',
                         settings: {
-                            requested_visibility: { '.tag': 'public' },
-                            audience: { '.tag': 'public' },
-                            access: { '.tag': 'viewer' },
-                            short_url: true,
+                            access: 'viewer',
+                            allow_download: true,
+                            audience: 'public',
+                            requested_visibility: 'public',
                         },
                     },
                 }
@@ -66,23 +64,47 @@ export async function getCurrentAccount() {
     }
 }
 
-export async function uploadFile() {
+export async function getUserInfo() {
     try {
         const response = await ky
-            .post('https://api.dropboxapi.com/2/files/list_folder', {
+            .post('https://api.dropboxapi.com/2/users/get_account', {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization:
-                        'Bearer sl.BjPN29c70UIWsxn40MzpjEq3yM8g_oj4sRhzrzxdtBuz115FMXy8JNqhf5i6dXts4OE_yO_VSX-StQonuyZt4mVl4v4aV3WvaN88ibUWP7YdDkY-7SU5o0rmGLVSWcS7lDdjnyseDAYv',
+                    Authorization: `Bearer ${
+                        document.cookie.split(';')[0].split('=')[1]
+                    }`,
                 },
-                // body: {},
-                json: {
-                    path: '',
-                    mode: 'add',
-                    mute: false,
-                    autorename: false,
-                    strict_conflict: false,
+                json: {},
+            })
+            .json();
+        console.log(response);
+    } catch (error) {
+        console.log('Error', error);
+    }
+}
+
+export async function uploadFile(formData) {
+    const requestParams = {
+        "autorename": 'false',
+        "mode": "add",
+        "mute": 'false',
+        "path": "",
+        "strict_conflict": 'false'
+      };
+
+    const requestParamsJSON = JSON.stringify(requestParams);
+    const requestParamsBase64 = btoa(requestParamsJSON);
+
+    try {
+        const response = await ky
+            .post('https://content.dropboxapi.com/2/files/upload', {
+                headers: {
+                    'Content-Type': 'application/octet-stream',
+                    Authorization: `Bearer ${document.cookie.split(';')[0].split('=')[1]}`,
+                    'Dropbox-API-Arg': requestParamsBase64 
                 },
+                body: formData
+                // json: {},
             })
             .json();
         console.log(response);
@@ -107,7 +129,9 @@ export const getUserToken = () => {
         ky.post(tokenUrl, { body: formData })
             .json()
             .then((data) => {
+                console.log(data)
                 document.cookie = `access_token=${data.access_token}`;
+                document.cookie = `account_id=${data.account_id}`;
             })
             .catch((error) => {
                 console.error(

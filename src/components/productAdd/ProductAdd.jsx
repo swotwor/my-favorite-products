@@ -1,7 +1,7 @@
 import style from './index.module.scss';
 import { useState } from 'react';
 import ProductAddHeader from './components/productAddHeader/ProductAddHeader';
-import { addNewProduct, getCurrentAccount } from '../../logic/logic';
+import { addNewProduct, getCurrentAccount, getUserInfo, uploadFile } from '../../logic/logic';
 
 const ProductAdd = () => {
     const [stateProduct, setStateProduct] = useState({
@@ -11,6 +11,7 @@ const ProductAdd = () => {
         location: '',
         description: '',
     });
+    const [file, setFile] = useState(null);
 
     const handleInputChange = (event, field) => {
         setStateProduct({ ...stateProduct, [field]: event.target.value });
@@ -31,8 +32,12 @@ const ProductAdd = () => {
         // } else {
         //     alert('Не всі поля заповнені')
         // }
-        
-        getCurrentAccount();
+
+        const formData = new FormData();
+        formData.append('file', file);
+        uploadFile(formData);
+        // getCurrentAccount();
+        // getUserInfo()
         // const cookies = document.cookie.split(';')[0].split('=')[1];
         // console.log(cookies)
 
@@ -71,9 +76,8 @@ const ProductAdd = () => {
                 value={stateProduct.description}
                 onChange={event => handleInputChange(event, 'description')}
             />
+            <input type="file" id="fileInput" name="file" accept=".jpg, .jpeg, .png" />
             <button onClick={handleClickOnButton}>Додати</button>
-
-            <a href='https://www.dropbox.com/oauth2/authorize?client_id=zcq3lp9ddt5q9sj&redirect_uri=http://localhost:5173&response_type=code'>DROPBOX</a>
         </div>
     );
 };

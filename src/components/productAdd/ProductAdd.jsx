@@ -13,6 +13,10 @@ const ProductAdd = () => {
     });
     const [file, setFile] = useState(null);
 
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]);
+      };
+
     const handleInputChange = (event, field) => {
         setStateProduct({ ...stateProduct, [field]: event.target.value });
     };
@@ -35,7 +39,13 @@ const ProductAdd = () => {
 
         const formData = new FormData();
         formData.append('file', file);
-        uploadFile(formData);
+        uploadFile(formData, file.name);
+
+
+        // console.log(file.name);
+
+
+
         // getCurrentAccount();
         // getUserInfo()
         // const cookies = document.cookie.split(';')[0].split('=')[1];
@@ -76,7 +86,7 @@ const ProductAdd = () => {
                 value={stateProduct.description}
                 onChange={event => handleInputChange(event, 'description')}
             />
-            <input type="file" id="fileInput" name="file" accept=".jpg, .jpeg, .png" />
+            <input type="file" onChange={handleFileChange} accept=".jpg, .jpeg, .png" />
             <button onClick={handleClickOnButton}>Додати</button>
         </div>
     );

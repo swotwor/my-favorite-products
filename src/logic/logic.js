@@ -83,17 +83,16 @@ export async function getUserInfo() {
     }
 }
 
-export async function uploadFile(formData) {
+export async function uploadFile(formData, name) {
     const requestParams = {
-        "autorename": 'false',
+        "autorename": true,
         "mode": "add",
-        "mute": 'false',
-        "path": "",
-        "strict_conflict": 'false'
+        // "mute": false,
+        "path": `/${name}`,
+        "strict_conflict": false
       };
 
     const requestParamsJSON = JSON.stringify(requestParams);
-    const requestParamsBase64 = btoa(requestParamsJSON);
 
     try {
         const response = await ky
@@ -101,10 +100,10 @@ export async function uploadFile(formData) {
                 headers: {
                     'Content-Type': 'application/octet-stream',
                     Authorization: `Bearer ${document.cookie.split(';')[0].split('=')[1]}`,
-                    'Dropbox-API-Arg': requestParamsBase64 
+                    'Dropbox-API-Arg': requestParamsJSON,
                 },
-                body: formData
-                // json: {},
+                body: formData,
+                json: {},
             })
             .json();
         console.log(response);
@@ -131,7 +130,7 @@ export const getUserToken = () => {
             .then((data) => {
                 console.log(data)
                 document.cookie = `access_token=${data.access_token}`;
-                document.cookie = `account_id=${data.account_id}`;
+                // document.cookie = `account_id=${data.account_id}`;
             })
             .catch((error) => {
                 console.error(

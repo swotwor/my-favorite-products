@@ -1,3 +1,6 @@
+Used: ReactJS, Redux-Toolkit, React-Router-Dom, SASS, Ky
+
+
 Вітаю.
 
 Тут я опишу основні ідеї і завдання які може вирішити цей проєкт.

@@ -87,7 +87,6 @@ export async function uploadFile(formData, name) {
     const requestParams = {
         "autorename": true,
         "mode": "add",
-        // "mute": false,
         "path": `/${name}`,
         "strict_conflict": false
       };

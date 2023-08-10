@@ -24,10 +24,13 @@ const ProductAdd = () => {
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
     
     const handleClickOnButton = () => {
+        console.log(file)
+        const formData = new FormData();
+        formData.append('data-binary', file);
+        uploadFile(formData, file.name);
         // if(allValuesFilled) {
         //     addNewProduct(stateProduct);
         //     setStateProduct({
-        //         img: '',
         //         cost: '',
         //         title: '',
         //         location: '',
@@ -36,32 +39,13 @@ const ProductAdd = () => {
         // } else {
         //     alert('Не всі поля заповнені')
         // }
-
-        const formData = new FormData();
-        formData.append('file', file);
-        uploadFile(formData, file.name);
-
-
-        // console.log(file.name);
-
-
-
-        // getCurrentAccount();
-        // getUserInfo()
-        // const cookies = document.cookie.split(';')[0].split('=')[1];
-        // console.log(cookies)
-
     };
 
     return (
         <div className={style.wrapper}>
             <ProductAddHeader />
             <p>Посилання на фото</p>
-            <input
-                type="text"
-                value={stateProduct.img}
-                onChange={event => handleInputChange(event, 'img')}
-            />
+            <input type="file" onChange={handleFileChange} accept=".jpg, .png, .JPEG, .PNG, " />
             <p>Назва</p>
             <input
                 type="text"
@@ -86,7 +70,6 @@ const ProductAdd = () => {
                 value={stateProduct.description}
                 onChange={event => handleInputChange(event, 'description')}
             />
-            <input type="file" onChange={handleFileChange} accept=".jpg, .jpeg, .png" />
             <button onClick={handleClickOnButton}>Додати</button>
         </div>
     );

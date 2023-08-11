@@ -44,8 +44,8 @@ const ProductAdd = () => {
     return (
         <div className={style.wrapper}>
             <ProductAddHeader />
-            <p>Посилання на фото</p>
-            <input type="file" onChange={handleFileChange} accept=".jpg, .png, .JPEG, .PNG, " />
+            <p>Прікрипити фотографію</p>
+            <input type="file" onChange={handleFileChange} accept='.jpg, .png, .jpeg, .png' />
             <p>Назва</p>
             <input
                 type="text"

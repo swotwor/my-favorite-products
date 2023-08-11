@@ -104,6 +104,17 @@ export async function uploadFile(formData, name) {
         })
         .json();
         console.log(response);
+
+        const responseLink = await ky
+        .post('https://api.dropboxapi.com/2/files/get_temporary_link', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${document.cookie.split(';')[0].split('=')[1]}`,
+            },
+            body: JSON.stringify({path: `/${name}`}),
+        })
+        .json();
+        console.log(responseLink);
     } catch (error) {
         console.log('Error', error);
     }
@@ -124,17 +135,17 @@ export const getUserToken = () => {
     if (code) {
         ky.post(tokenUrl, { body: formData })
         .json()
-            .then((data) => {
-                console.log(data)
-                document.cookie = `access_token=${data.access_token}`;
-                // document.cookie = `account_id=${data.account_id}`;
-            })
-            .catch((error) => {
-                console.error(
-                    'Ошибка при обработке ответа авторизации:',
-                    error
-                    );
-                });
-            }
-        };
+        .then((data) => {
+            console.log(data)
+            document.cookie = `access_token=${data.access_token}`;
+            // document.cookie = `account_id=${data.account_id}`;
+        })
+        .catch((error) => {
+            console.error(
+                'Ошибка при обработке ответа авторизации:',
+                error
+            );
+        });
+    }
+};
         

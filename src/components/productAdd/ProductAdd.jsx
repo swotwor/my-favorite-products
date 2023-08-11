@@ -24,7 +24,6 @@ const ProductAdd = () => {
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
     
     const handleClickOnButton = () => {
-        console.log(file)
         const formData = new FormData();
         formData.append('data-binary', file);
         uploadFile(formData, file.name);

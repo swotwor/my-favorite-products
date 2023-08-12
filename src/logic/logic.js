@@ -91,33 +91,51 @@ export async function uploadFile(formData, name) {
         "path": `/${name}`,
         "strict_conflict": false
     };
-    
+
+    console.log(JSON.stringify({path: "/photo.jpg"}))
+
     try {
         const response = await ky
-        .post('https://content.dropboxapi.com/2/files/upload', {
-            headers: {
-                'Content-Type': 'application/octet-stream',
-                Authorization: `Bearer ${document.cookie.split(';')[0].split('=')[1]}`,
-                'Dropbox-API-Arg': JSON.stringify(requestParams),
-            },
-            body: formData,
-        })
-        .json();
-        console.log(response);
-
-        const responseLink = await ky
-        .post('https://api.dropboxapi.com/2/files/get_temporary_link', {
+        .post('https://api.dropboxapi.com/2/sharing/get_shared_links', {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${document.cookie.split(';')[0].split('=')[1]}`,
             },
-            body: JSON.stringify({path: `/${name}`}),
+            body: JSON.stringify({path: "/photo.jpg"}),
         })
         .json();
-        console.log(responseLink);
+        console.log(response);
     } catch (error) {
         console.log('Error', error);
     }
+    
+    // try {
+        // const response = await ky
+        // .post('https://content.dropboxapi.com/2/files/upload', {
+        //     headers: {
+        //         'Content-Type': 'application/octet-stream',
+        //         Authorization: `Bearer ${document.cookie.split(';')[0].split('=')[1]}`,
+        //         'Dropbox-API-Arg': JSON.stringify(requestParams),
+        //     },
+        //     body: formData,
+        // })
+        // .json();
+        // console.log(response);
+
+    //     const responseLink = await ky
+    //     .post('https://api.dropboxapi.com/2/files/get_temporary_link', {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             Authorization: `Bearer ${document.cookie.split(';')[0].split('=')[1]}`,
+    //         },
+    //         body: JSON.stringify({path: `/photo.jpg`}),
+    //     })
+    //     .json();
+    //     console.log(responseLink);
+    // } catch (error) {
+    //     console.log('Error', error);
+    // }
+
 }
 
 export const getUserToken = () => {
@@ -135,10 +153,8 @@ export const getUserToken = () => {
     if (code) {
         ky.post(tokenUrl, { body: formData })
         .json()
-        .then((data) => {
-            console.log(data)
+        .then(data => {
             document.cookie = `access_token=${data.access_token}`;
-            // document.cookie = `account_id=${data.account_id}`;
         })
         .catch((error) => {
             console.error(
@@ -149,3 +165,44 @@ export const getUserToken = () => {
     }
 };
         
+export const parseHashFragment = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(window.location.hash);
+    const url = window.location.hash
+    console.log(window.location.hash);
+    console.log(params);
+    const access_token = params.get("access_token");
+    console.log(access_token)
+
+
+    // document.cookie = `access_token=${access_token}`;
+    // localStorage.setItem('userName', params.get("account_username"));
+
+    // window.location.replace("http://localhost:5173");
+    
+    // const accessToken = params.get("access_token");
+    // const accountUsername = params.get("account_username");
+    // if (accessToken && accountUsername) {
+    //     const redirectURL = `http://localhost:5173/?access_token=${accessToken}&token_type=${tokenType}&account_username=${accountUsername}`;
+    //     return redirectURL;
+    // } else {
+    //     return null;
+    // }
+}
+
+
+export async function uploadFileImg(formData) {
+    try {
+        const response = await ky
+        .post('https://api.imgur.com/3/image/', {
+            headers: {
+                Authorization: `Client-ID f05c310edcc7f90`,
+            },
+            body: formData,
+        })
+        .json();
+        console.log(response);
+    } catch (error) {
+        console.log('Error', error);
+    }
+}

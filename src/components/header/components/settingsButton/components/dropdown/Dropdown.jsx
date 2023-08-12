@@ -15,7 +15,7 @@ const Dropdown = () => {
                     <button onClick={handleClickOnButton}>Вихід із аккаунту</button>
                 </div>
             ) : (
-                <a href="https://www.dropbox.com/oauth2/authorize?client_id=zcq3lp9ddt5q9sj&redirect_uri=http://localhost:5173&response_type=code">
+                <a href="https://api.imgur.com/oauth2/authorize?client_id=f05c310edcc7f90&response_type=token">
                     Авторизація в DROPBOX
                 </a>
             )}
@@ -24,3 +24,5 @@ const Dropdown = () => {
 };
 
 export default Dropdown;
+
+// http://localhost:5173/#access_token=d2f542e2ba0ba51fa16b12c05a51fc545845d0de&expires_in=315360000&token_type=bearer&refresh_token=bc8a27648b6404c4a84679682e9a6fbd89286abe&account_username=Swotwor&account_id=173397253

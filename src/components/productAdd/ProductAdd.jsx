@@ -1,11 +1,11 @@
 import style from './index.module.scss';
 import { useState } from 'react';
 import ProductAddHeader from './components/productAddHeader/ProductAddHeader';
-import { addNewProduct, getCurrentAccount, getUserInfo, uploadFile } from '../../logic/logic';
+import { addNewProduct, getCurrentAccount, getUserInfo, uploadFile, uploadFileImg } from '../../logic/logic';
 
 const ProductAdd = () => {
     const [stateProduct, setStateProduct] = useState({
-        img: '',
+        img: 'https://www.dropbox.com/s/uorf93ye2syxp9q/photo.jpg?dl=0',
         cost: '',
         title: '',
         location: '',
@@ -24,13 +24,19 @@ const ProductAdd = () => {
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
     
     const handleClickOnButton = () => {
+        // const formData = new FormData();
+        // formData.append('data-binary', file);
+        // uploadFile(formData, file.name);
+
         const formData = new FormData();
-        formData.append('data-binary', file);
-        uploadFile(formData, file.name);
+        formData.append('image', file);
+        uploadFileImg(formData);
+
         // if(allValuesFilled) {
         //     addNewProduct(stateProduct);
         //     setStateProduct({
         //         cost: '',
+        //         img: 'https://www.dropbox.com/s/uorf93ye2syxp9q/photo.jpg?dl=0',
         //         title: '',
         //         location: '',
         //         description: '',
@@ -43,8 +49,6 @@ const ProductAdd = () => {
     return (
         <div className={style.wrapper}>
             <ProductAddHeader />
-            <p>Прікрипити фотографію</p>
-            <input type="file" onChange={handleFileChange} accept='.jpg, .png, .jpeg, .png' />
             <p>Назва</p>
             <input
                 type="text"
@@ -69,6 +73,8 @@ const ProductAdd = () => {
                 value={stateProduct.description}
                 onChange={event => handleInputChange(event, 'description')}
             />
+            <p>Прікрипити фотографію</p>
+            <input type="file" onChange={handleFileChange} accept='.jpg, .png, .jpeg, .png' />
             <button onClick={handleClickOnButton}>Додати</button>
         </div>
     );

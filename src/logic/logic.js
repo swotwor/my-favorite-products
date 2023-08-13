@@ -54,17 +54,22 @@ export async function getUserInfo() {
     }
 }
 
-export async function uploadImage(formData) {
+export async function uploadImage(file, stateProduct) {
+    const access_token = document.cookie.split(';')[0].split('=')[1];
+    const formData = new FormData();
+    formData.append('image', file);
+
     try {
         const response = await ky
         .post('https://api.imgur.com/3/image/', {
             headers: {
-                authorization: 'Bearer 7d5c54371b135406cd08087819ec156da4b9a872',
+                authorization: `Bearer ${access_token}`,
             },
             body: formData,
         })
         .json();
-        console.log(response);
+        addNewProduct({...stateProduct, img: response.data.link})
+        // console.log(response.data.link);
     } catch (error) {
         console.log('Error', error);
     }
@@ -77,7 +82,10 @@ export const extractTokenAndUsername = () => {
     for (const [key, value] of params.entries()) {
         result[key] = value;
     }
-
-    document.cookie = `access_token=${result.access_token}`;
-    localStorage.setItem('myFavProd_userName', JSON.stringify({userName: result.account_username}));
+    
+    if(!document.cookie.split(';')[0].split('=')[1]) {
+        console.log("have cockie");
+        document.cookie = `access_token=${result.access_token}`;
+        localStorage.setItem('myFavProd_userName', JSON.stringify(result.account_username));
+    }
 }

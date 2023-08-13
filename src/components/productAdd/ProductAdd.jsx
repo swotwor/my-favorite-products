@@ -5,18 +5,17 @@ import { addNewProduct, uploadImage } from '../../logic/logic';
 
 const ProductAdd = () => {
     const [stateProduct, setStateProduct] = useState({
-        img: '',
         cost: '',
         title: '',
         location: '',
         description: '',
     });
-    const [file, setFile] = useState(null);
-
+    const [file, setFile] = useState();
+    
     const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
-      };
-
+        setFile(event.target.files);
+    };
+    
     const handleInputChange = (event, field) => {
         setStateProduct({ ...stateProduct, [field]: event.target.value });
     };
@@ -24,19 +23,16 @@ const ProductAdd = () => {
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
     
     const handleClickOnButton = () => {
-        const formData = new FormData();
-        formData.append('image', file);
-        uploadImage(formData);
+        uploadImage(file.files[0], stateProduct);
 
-        if(allValuesFilled) {
-            addNewProduct(stateProduct);
+        if(allValuesFilled && file) {
             setStateProduct({
                 cost: '',
-                img: '',
                 title: '',
                 location: '',
                 description: '',
             })
+            setFile(null);
         } else {
             alert('Не всі поля заповнені')
         }
@@ -51,9 +47,9 @@ const ProductAdd = () => {
                 value={stateProduct.title}
                 onChange={event => handleInputChange(event, 'title')}
             />
-            <p>Вартість</p>
+            <p>Вартість, грн</p>
             <input
-                type="text"
+                type="number"
                 value={stateProduct.cost}
                 onChange={event => handleInputChange(event, 'cost')}
             />
@@ -70,7 +66,7 @@ const ProductAdd = () => {
                 onChange={event => handleInputChange(event, 'description')}
             />
             <p>Прікрипити фотографію</p>
-            <input type="file" onChange={handleFileChange} accept='.jpg, .png, .jpeg, .png' />
+            <input type="file" onChange={handleFileChange} accept='.jpg, .png, .jpeg, .png' value={file}/>
             <button onClick={handleClickOnButton}>Додати</button>
         </div>
     );

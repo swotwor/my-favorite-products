@@ -24,5 +24,3 @@ const Dropdown = () => {
 };
 
 export default Dropdown;
-
-// http://localhost:5173/#access_token=d2f542e2ba0ba51fa16b12c05a51fc545845d0de&expires_in=315360000&token_type=bearer&refresh_token=bc8a27648b6404c4a84679682e9a6fbd89286abe&account_username=Swotwor&account_id=173397253

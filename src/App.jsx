@@ -6,15 +6,14 @@ import ProductCard from './components/productCard/ProductCard';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import { getPoducts, getUserToken, parseHashFragment } from './logic/logic';
+import { getPoducts, extractTokenAndUsername } from './logic/logic';
 
 const App = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // getUserToken();
-        parseHashFragment();
         getPoducts(dispatch);
+        extractTokenAndUsername();
     }, []);
 
     return (

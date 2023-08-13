@@ -1,11 +1,11 @@
 import style from './index.module.scss';
 import { useState } from 'react';
 import ProductAddHeader from './components/productAddHeader/ProductAddHeader';
-import { addNewProduct, getCurrentAccount, getUserInfo, uploadFile, uploadFileImg } from '../../logic/logic';
+import { addNewProduct, uploadImage } from '../../logic/logic';
 
 const ProductAdd = () => {
     const [stateProduct, setStateProduct] = useState({
-        img: 'https://www.dropbox.com/s/uorf93ye2syxp9q/photo.jpg?dl=0',
+        img: '',
         cost: '',
         title: '',
         location: '',
@@ -24,26 +24,22 @@ const ProductAdd = () => {
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
     
     const handleClickOnButton = () => {
-        // const formData = new FormData();
-        // formData.append('data-binary', file);
-        // uploadFile(formData, file.name);
-
         const formData = new FormData();
         formData.append('image', file);
-        uploadFileImg(formData);
+        uploadImage(formData);
 
-        // if(allValuesFilled) {
-        //     addNewProduct(stateProduct);
-        //     setStateProduct({
-        //         cost: '',
-        //         img: 'https://www.dropbox.com/s/uorf93ye2syxp9q/photo.jpg?dl=0',
-        //         title: '',
-        //         location: '',
-        //         description: '',
-        //     })
-        // } else {
-        //     alert('Не всі поля заповнені')
-        // }
+        if(allValuesFilled) {
+            addNewProduct(stateProduct);
+            setStateProduct({
+                cost: '',
+                img: '',
+                title: '',
+                location: '',
+                description: '',
+            })
+        } else {
+            alert('Не всі поля заповнені')
+        }
     };
 
     return (

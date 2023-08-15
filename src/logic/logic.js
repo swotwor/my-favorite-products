@@ -1,23 +1,44 @@
 import ky from 'ky';
-import { setProducts } from '../store/store';
+import { setAppData, setProductItem } from '../store/store';
 
-export async function addNewProduct(productInfo) {
-    console.log(productInfo)
+export async function addNewProduct(file, productInfo, duspatch) {
+    const linkImage = await uploadImage(file)
+    
     const response = await ky
     .post('https://61ed9b4c634f2f00170cec9d.mockapi.io/products', {
-        json: productInfo,
+        json: {...productInfo, img: linkImage},
     })
     .json();
-    console.log(response);
+    duspatch(setProductItem(response));
+    window.location.replace('/');
+}
+export async function uploadImage(file) {
+    const access_token = document.cookie.split(';')[0].split('=')[1];
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+        const response = await ky
+        .post('https://api.imgur.com/3/image/', {
+            headers: {
+                authorization: `Bearer ${access_token}`,
+            },
+            body: formData,
+        })
+        .json();
+
+        return response.data.link;
+    } catch (error) {
+        alert('Error', error);
+    }
 }
 
-export async function getPoducts(dispatch) {
+export async function getAppData(dispatch) {
     const response = await ky
     .get('https://61ed9b4c634f2f00170cec9d.mockapi.io/products')
     .json();
-    dispatch(setProducts(response));
-    console.log(response)
-    // localStorage.setItem('myFavProd_')
+    dispatch(setAppData(response));
+    localStorage.setItem('myFavProd_appData', JSON.stringify(response))
 }
 
 export async function getCurrentAccount() {
@@ -34,47 +55,7 @@ export async function getCurrentAccount() {
         console.log('Error', error);
     }
 }
-
-export async function getUserInfo() {
-    try {
-        const response = await ky
-        .post('https://api.dropboxapi.com/2/users/get_account', {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${
-                    document.cookie.split(';')[0].split('=')[1]
-                }`,
-            },
-            json: {},
-        })
-        .json();
-        console.log(response);
-    } catch (error) {
-        console.log('Error', error);
-    }
-}
-
-export async function uploadImage(file, stateProduct) {
-    const access_token = document.cookie.split(';')[0].split('=')[1];
-    const formData = new FormData();
-    formData.append('image', file);
-
-    try {
-        const response = await ky
-        .post('https://api.imgur.com/3/image/', {
-            headers: {
-                authorization: `Bearer ${access_token}`,
-            },
-            body: formData,
-        })
-        .json();
-        addNewProduct({...stateProduct, img: response.data.link})
-        // console.log(response.data.link);
-    } catch (error) {
-        console.log('Error', error);
-    }
-}
-        
+       
 export const extractTokenAndUsername = () => {
     const params = new URLSearchParams(window.location.hash.substring(1));
     const result = {};

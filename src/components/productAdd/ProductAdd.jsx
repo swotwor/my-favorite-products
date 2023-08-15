@@ -1,9 +1,11 @@
 import style from './index.module.scss';
 import { useState } from 'react';
 import ProductAddHeader from './components/productAddHeader/ProductAddHeader';
-import { addNewProduct, uploadImage } from '../../logic/logic';
+import { addNewProduct } from '../../logic/logic';
+import { useDispatch } from 'react-redux';
 
 const ProductAdd = () => {
+    const duspatch = useDispatch();
     const [stateProduct, setStateProduct] = useState({
         cost: '',
         title: '',
@@ -13,7 +15,7 @@ const ProductAdd = () => {
     const [file, setFile] = useState();
     
     const handleFileChange = (event) => {
-        setFile(event.target.files);
+        setFile(event.target.files[0]);
     };
     
     const handleInputChange = (event, field) => {
@@ -23,7 +25,7 @@ const ProductAdd = () => {
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
     
     const handleClickOnButton = () => {
-        uploadImage(file.files[0], stateProduct);
+        addNewProduct(file, stateProduct, duspatch);
 
         if(allValuesFilled && file) {
             setStateProduct({
@@ -32,7 +34,6 @@ const ProductAdd = () => {
                 location: '',
                 description: '',
             })
-            setFile(null);
         } else {
             alert('Не всі поля заповнені')
         }
@@ -66,7 +67,7 @@ const ProductAdd = () => {
                 onChange={event => handleInputChange(event, 'description')}
             />
             <p>Прікрипити фотографію</p>
-            <input type="file" onChange={handleFileChange} accept='.jpg, .png, .jpeg, .png' value={file}/>
+            <input type="file" onChange={handleFileChange} accept='.jpg, .png, .jpeg, .png'/>
             <button onClick={handleClickOnButton}>Додати</button>
         </div>
     );

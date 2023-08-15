@@ -1,13 +1,12 @@
 import style from './index.module.scss';
 import { useDispatch } from 'react-redux';
-import { changeCurrentProduct, setCurrentProductCard } from '../../../../store/store';
+import { setCurrentProductCard } from '../../../../store/store';
 
 const ViewCard = ({ productItem }) => {
     const dispatch = useDispatch();
     const { title, img, cost, description, location } = productItem;
 
     function handleClick() {
-        dispatch(changeCurrentProduct('productCard'));
         dispatch(setCurrentProductCard(productItem));
         sessionStorage.setItem('productItem', JSON.stringify(productItem))
     }

@@ -25,22 +25,25 @@
     }
     &_title {
         margin-right: 5px;
+        font-size: 26px;
     }
     &_cost {
     }
+    
     &_productDescription {
-        font-size: 18px;
-        line-height: 18px;
+        font-size: 26px;
+        line-height: 28px;
         background-color: rgba(255, 255, 255, 0.40);
         padding: 5px;
         border-radius: 10px;
         margin-bottom: 5px;
     }
     &_location {
-        font-size: 18px;
-        line-height: 18px;
+        font-size: 26px;
+        line-height: 28px;
         background-color: rgba(255, 255, 255, 0.40);
         padding: 5px;
         border-radius: 10px;
+        margin-top: 50px;
     }
 }

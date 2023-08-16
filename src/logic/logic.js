@@ -1,18 +1,45 @@
 import ky from 'ky';
 import { setAppData, setProductItem } from '../store/store';
 
-export async function addNewProduct(file, productInfo, duspatch) {
-    const linkImage = await uploadImage(file)
+export async function addNewProduct(file, productInfo, duspatch, Resizer) {
+    const fileBeforCompression = await compressImage(file, Resizer)
+    const imageInfo = await uploadImage(fileBeforCompression);
     
     const response = await ky
     .post('https://61ed9b4c634f2f00170cec9d.mockapi.io/products', {
-        json: {...productInfo, img: linkImage},
+        json: {...productInfo, img: imageInfo.link, deleteHash: imageInfo.deletehash},
     })
     .json();
     duspatch(setProductItem(response));
     window.location.replace('/');
 }
-export async function uploadImage(file) {
+
+async function compressImage(file, Resizer) {
+    const resizeFile = (fileImg) =>
+        new Promise((resolve) => {
+            Resizer.imageFileResizer(
+                fileImg,
+                600,
+                600,
+                'JPEG',
+                100,
+                0,
+                (uri) => {
+                    resolve(uri);
+                },
+                'file'
+            );
+        });
+
+    try {
+        const image = await resizeFile(file);
+        return image;
+    } catch (err) {
+        alert(err);
+    }
+}
+
+async function uploadImage(file) {
     const access_token = document.cookie.split(';')[0].split('=')[1];
     const formData = new FormData();
     formData.append('image', file);
@@ -27,7 +54,7 @@ export async function uploadImage(file) {
         })
         .json();
 
-        return response.data.link;
+        return response.data;
     } catch (error) {
         alert('Error', error);
     }
@@ -68,5 +95,7 @@ export const extractTokenAndUsername = () => {
         console.log("have cockie");
         document.cookie = `access_token=${result.access_token}`;
         localStorage.setItem('myFavProd_userName', JSON.stringify(result.account_username));
+        window.location.replace('/');
     }
+
 }

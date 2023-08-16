@@ -17,7 +17,7 @@ const ViewCard = ({ productItem }) => {
             <div className={style.viewCard_contentBox}>
                 <div className={style.viewCard_name}>
                     <div className={style.viewCard_nameLeftBlock}>
-                        <p className={style.viewCard_title}>{title} {cost}грн</p>
+                        <p className={style.viewCard_title}>{title} - {cost} грн</p>
                     </div>
                 </div>
                 <p className={style.viewCard_productDescription}>{description}</p>

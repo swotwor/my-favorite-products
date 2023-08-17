@@ -7,7 +7,7 @@ const ProductCard = () => {
     const [editCard, setEditCard] = useState(false);
 
     const changeCardStatus = () => {
-        setEditCard(prev => !prev)
+        setEditCard(prev => !prev);
     }
 
     return (

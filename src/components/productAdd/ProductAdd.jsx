@@ -23,9 +23,7 @@ const ProductAdd = () => {
         setStateProduct({ ...stateProduct, [field]: event.target.value });
     };
 
-    const allValuesFilled = Object.values(stateProduct).every(
-        (value) => value !== ''
-    );
+    const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
 
     const handleClickOnButton = () => {
         if (allValuesFilled && file) {

@@ -1,5 +1,7 @@
 import ky from 'ky';
-import { setAppData, setProductItem } from '../store/store';
+import { setAppData, setProductItem, deleteProduct } from '../store/store';
+
+const access_token = document.cookie.split(';')[0].split('=')[1];
 
 export async function addNewProduct(file, productInfo, duspatch, Resizer) {
     const fileBeforCompression = await compressImage(file, Resizer)
@@ -40,7 +42,6 @@ async function compressImage(file, Resizer) {
 }
 
 async function uploadImage(file) {
-    const access_token = document.cookie.split(';')[0].split('=')[1];
     const formData = new FormData();
     formData.append('image', file);
 
@@ -100,9 +101,7 @@ export const extractTokenAndUsername = () => {
 
 }
 
-export async function deleteFoto(imageHash) {
-    const access_token = document.cookie.split(';')[0].split('=')[1];
-
+async function deleteProductPhotoRequest(imageHash) {
     try {
         const response = await ky
         .delete(`https://api.imgur.com/3/image/${imageHash}`, {
@@ -111,14 +110,39 @@ export async function deleteFoto(imageHash) {
             },
         })
         .json();
-        console.log(response)
-        
-        // response
-        // data:true
-        // status:200
-        // success:true
+        return response.success
     } catch (error) {
-        alert(error)
+        console.log(error)
+    }   
+    // response
+    // success:true
+}
+
+async function deleteProductInfoRequest(id) {
+    try {
+        const response = await ky
+        .delete(`https://61ed9b4c634f2f00170cec9d.mockapi.io/products/${id}`, {
+            headers: {
+                authorization: `Bearer ${access_token}`,
+            },
+        })
+        .json();
+        return response.title
+    } catch (error) {
+        console.log(error)
+    }   
+    // response
+    // Возвращает объект который был удален
+    // title: "ewrewr"
+}
+
+export async function deleteProductRequest(imageHash, id, dispatch) {
+     const deleteFoto = await deleteProductPhotoRequest(imageHash);
+     const deleteProductInfo = await deleteProductInfoRequest(id);
+
+    if (deleteFoto && deleteProductInfo) {
+        dispatch(deleteProduct(id));
+        sessionStorage.removeItem('productItem');
+        window.location.replace('/');
     }
-    
 }

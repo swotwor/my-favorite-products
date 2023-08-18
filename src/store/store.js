@@ -16,14 +16,17 @@ export const productSlice = createSlice({
             state.productItems = [...action.payload]
         },
         setProductItem: (state, action) => {
-            console.log(action)
             state.productItems = [...state.productItems, action.payload]
+        },
+        deleteProduct: (state, action) => {
+            state.productItems = [...state.productItems.filter(item => item.id !== action.payload.id)];
         }
     },
 });
 
 export const {
     setAppData,
+    deleteProduct,
     setProductItem,
     setCurrentProductCard,
 } = productSlice.actions;

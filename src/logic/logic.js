@@ -99,3 +99,26 @@ export const extractTokenAndUsername = () => {
     }
 
 }
+
+export async function deleteFoto(imageHash) {
+    const access_token = document.cookie.split(';')[0].split('=')[1];
+
+    try {
+        const response = await ky
+        .delete(`https://api.imgur.com/3/image/${imageHash}`, {
+            headers: {
+                authorization: `Bearer ${access_token}`,
+            },
+        })
+        .json();
+        console.log(response)
+        
+        // response
+        // data:true
+        // status:200
+        // success:true
+    } catch (error) {
+        alert(error)
+    }
+    
+}

@@ -1,4 +1,4 @@
-.editCard {
+.wrapper {
     width: 100%;
 
     &_productPhoto {
@@ -20,5 +20,28 @@
             margin: 0 auto;
             padding: 10px;
         }
+    }
+}
+
+.wrapper {
+    p {
+        color: white;
+        font-size: 26px;
+    }
+
+    input {
+        font-size: 24px;
+        background-color: white;
+        padding: 5px;
+        margin: 5px;
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    button {
+        font-size: 26px;
+        background-color: white;
+        padding: 5px 10px;
+        border-radius: 10px;
     }
 }

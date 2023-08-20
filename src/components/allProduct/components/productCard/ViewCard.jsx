@@ -1,18 +1,15 @@
 import style from './index.module.scss';
-import { useDispatch } from 'react-redux';
-import { setCurrentProductCard } from '../../../../store/store';
+import { useEffect } from 'react';
 
 const ViewCard = ({ productItem }) => {
-    const dispatch = useDispatch();
     const { title, img, cost, description, location } = productItem;
 
-    function handleClick() {
-        dispatch(setCurrentProductCard(productItem));
-        sessionStorage.setItem('productItem', JSON.stringify(productItem))
-    }
+    useEffect(() => {
+        sessionStorage.setItem('productItem', JSON.stringify(productItem));
+    },[])
 
     return (
-        <div className={style.viewCard} onClick={handleClick}>
+        <div className={style.viewCard}>
             <img className={style.viewCard_productImg} src={img} alt="viewCard_productImg" />
             <div className={style.viewCard_contentBox}>
                 <div className={style.viewCard_name}>

@@ -37,11 +37,27 @@
         width: 100%;
         border-radius: 10px;
     }
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
 
     button {
         font-size: 26px;
-        background-color: white;
         padding: 5px 10px;
         border-radius: 10px;
+        cursor: pointer;
+    }
+
+    &_cancle {
+        background-color: green;
+    }
+    &_delete {
+        background-color: red;
+    }
+    &_save {
+        background-color: orange;
     }
 }

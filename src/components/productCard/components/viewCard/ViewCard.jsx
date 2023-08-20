@@ -1,11 +1,7 @@
 import style from './index.module.scss';
 
-const ViewCard = ({changeCardStatus}) => {
-    const getProductItemFromSessionStorage = sessionStorage.getItem('productItem');
-    const productInfo = getProductItemFromSessionStorage
-            ? JSON.parse(getProductItemFromSessionStorage)
-            : null;
-    const { title, img, cost, description, location } = productInfo || {};
+const ViewCard = ({ changeCardStatus, currentProducCard }) => {
+    const { title, img, cost, description, location } = currentProducCard;
 
     return (
         <div className={style.viewCard}>

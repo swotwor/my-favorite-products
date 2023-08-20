@@ -1,8 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    currentProductCard: {},
-    productItems: [],
+    appData: {
+        id: '',
+        userName: '',
+        dataBase: {
+            productItems: [],
+            categories: [],
+            lists: [],
+            recipes: [],
+        },
+        currentProductCard: {},
+    },
 };
 
 export const productSlice = createSlice({
@@ -13,7 +22,9 @@ export const productSlice = createSlice({
             state.currentProductCard = action.payload
         },
         setAppData: (state, action) => {
-            state.productItems = [...action.payload]
+            const responseUserApp = action.payload
+                .filter(item => item.userName !== localStorage.getItem('userName'))[0];
+            state.appData = {...responseUserApp};
         },
         setProductItem: (state, action) => {
             state.productItems = [...state.productItems, action.payload]

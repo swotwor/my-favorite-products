@@ -26,12 +26,11 @@ const ProductAdd = () => {
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
 
     const handleClickOnButton = () => {
-        // if (allValuesFilled && file) {
-        //     addNewProduct(file, stateProduct, duspatch, Resizer);
-        // } else {
-            //     alert('Не всі поля заповнені');
-            // }
-        addNewProduct();
+        if (allValuesFilled && file) {
+            addNewProduct(file, stateProduct, duspatch, Resizer);
+        } else {
+                alert('Не всі поля заповнені');
+            }
     };
 
     return (

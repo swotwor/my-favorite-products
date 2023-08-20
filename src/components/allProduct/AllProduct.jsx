@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const AllProduct = () => {
-    const { productItems } = useSelector((state) => state.products);
+    const { productItems } = useSelector((state) => state.products.appData.dataBase);
     
     return (
         <div className={style.allProduct}>

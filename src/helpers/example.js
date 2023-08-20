@@ -1,5 +1,16 @@
+export const userProductExample = {
+    id: '',
+    userName: '',
+    dataBase: {
+        productItems: [],
+        categories: [],
+        lists: [],
+        recipes: [],
+    },
+};
+
 export const newUser = {
-    userName: 'swotwor',
+    userName: 'Swotwor',
     dataBase: {
         productItems: [
             {

@@ -21,7 +21,7 @@ export async function getAppData(dispatch) {
     .get('https://61ed9b4c634f2f00170cec9d.mockapi.io/products')
     .json();
     dispatch(setAppData(response));
-    localStorage.setItem('myFavProd_appData', JSON.stringify(response))
+    localStorage.setItem('appData', JSON.stringify(response))
 }
 
 export async function getCurrentAccount() {
@@ -50,7 +50,7 @@ export const extractTokenAndUsername = () => {
     if(!document.cookie.split(';')[0].split('=')[1]) {
         console.log("have cockie");
         document.cookie = `access_token=${result.access_token}`;
-        localStorage.setItem('myFavProd_userName', JSON.stringify(result.account_username));
+        localStorage.setItem('userName', JSON.stringify(result.account_username));
         window.location.replace('/');
     }
 

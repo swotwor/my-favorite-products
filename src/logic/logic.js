@@ -3,16 +3,16 @@ import { setAppData, setProductItem, deleteProduct } from '../store/store';
 
 const access_token = document.cookie.split(';')[0].split('=')[1];
 
-export async function addNewProduct(file, productInfo, duspatch, Resizer) {
+export async function addNewProduct(file = null, productInfo, dispatch, Resizer) {
     const fileBeforCompression = await compressImage(file, Resizer)
     const imageInfo = await uploadImage(fileBeforCompression);
     
     const response = await ky
     .post('https://61ed9b4c634f2f00170cec9d.mockapi.io/products', {
-        json: {...productInfo, img: imageInfo.link, deleteHash: imageInfo.deletehash},
+        json: {...productInfo.appData, img: imageInfo.link, deleteHash: imageInfo.deletehash},
     })
     .json();
-    duspatch(setProductItem(response));
+    dispatch(setProductItem(response));
     window.location.replace('/');
 }
 
@@ -20,8 +20,9 @@ export async function getAppData(dispatch) {
     const response = await ky
     .get('https://61ed9b4c634f2f00170cec9d.mockapi.io/products')
     .json();
-    dispatch(setAppData(response));
-    localStorage.setItem('appData', JSON.stringify(response))
+    // dispatch(setAppData(response));
+    // localStorage.setItem('appData', JSON.stringify(response));
+    return response
 }
 
 export async function getCurrentAccount() {
@@ -48,12 +49,10 @@ export const extractTokenAndUsername = () => {
     }
     
     if(!document.cookie.split(';')[0].split('=')[1]) {
-        console.log("have cockie");
         document.cookie = `access_token=${result.access_token}`;
         localStorage.setItem('userName', JSON.stringify(result.account_username));
         window.location.replace('/');
     }
-
 }
 
 export async function deleteProductRequest(imageHash, id, dispatch) {
@@ -145,4 +144,34 @@ async function uploadImage(file) {
     } catch (error) {
         alert('Error', error);
     }
+}
+
+export async function checkUserOnDataBase() {
+    const appData = await getAppData();
+    const userName = JSON.parse(localStorage.getItem('userName').toLowerCase())
+    const isUserInDataBase = appData.filter(item => item.userName === userName);
+    const userProductExample = {
+        userName: '',
+        dataBase: {
+            productItems: [],
+            categories: [],
+            lists: [],
+            recipes: [],
+        },
+    };
+
+    if (!isUserInDataBase) {
+        try {
+            const response = await ky
+                .post('https://61ed9b4c634f2f00170cec9d.mockapi.io/products', {
+                    json: userProductExample,
+                })
+                .json();
+            
+        } catch (error) {
+            alert(error)
+        }
+        
+    }
+
 }

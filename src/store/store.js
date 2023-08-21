@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     appData: {
-        id: '',
         userName: '',
         dataBase: {
             productItems: [],
@@ -10,8 +9,8 @@ const initialState = {
             lists: [],
             recipes: [],
         },
-        currentProductCard: {},
     },
+    currentProductCard: {},
 };
 
 export const productSlice = createSlice({
@@ -31,7 +30,7 @@ export const productSlice = createSlice({
         },
         deleteProduct: (state, action) => {
             state.productItems = [...state.productItems.filter(item => item.id !== action.payload.id)];
-        }
+        },
     },
 });
 

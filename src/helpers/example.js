@@ -1,5 +1,4 @@
 export const userProductExample = {
-    id: '',
     userName: '',
     dataBase: {
         productItems: [],

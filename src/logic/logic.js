@@ -16,13 +16,13 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer)
     window.location.replace('/');
 }
 
-export async function getAppData(dispatch) {
+export async function getAppData() {
     const response = await ky
     .get('https://61ed9b4c634f2f00170cec9d.mockapi.io/products')
     .json();
+    return response
     // dispatch(setAppData(response));
     // localStorage.setItem('appData', JSON.stringify(response));
-    return response
 }
 
 export async function getCurrentAccount() {
@@ -47,8 +47,8 @@ export const extractTokenAndUsername = () => {
     for (const [key, value] of params.entries()) {
         result[key] = value;
     }
-    
-    if(!document.cookie.split(';')[0].split('=')[1]) {
+
+    if(Object.keys(result).length) {
         document.cookie = `access_token=${result.access_token}`;
         localStorage.setItem('userName', JSON.stringify(result.account_username));
         window.location.replace('/');
@@ -146,12 +146,12 @@ async function uploadImage(file) {
     }
 }
 
-export async function checkUserOnDataBase() {
-    const appData = await getAppData();
-    const userName = JSON.parse(localStorage.getItem('userName').toLowerCase())
-    const isUserInDataBase = appData.filter(item => item.userName === userName);
-    const userProductExample = {
-        userName: '',
+export async function checkUserInDataBase(dispatch) {
+    const appData = await getAppData(); // получаем всех пользователей из базы данных
+    const userName = localStorage.getItem('userName'); // после авторизации, получаем userName пользователя
+    const isUserInDataBase = appData.filter(item => item.userName === userName); // ищем пользователя в базе данных
+    const productExample = {
+        userName,
         dataBase: {
             productItems: [],
             categories: [],
@@ -160,18 +160,28 @@ export async function checkUserOnDataBase() {
         },
     };
 
-    if (!isUserInDataBase) {
+    console.log(!access_token);
+    console.log(!isUserInDataBase.length);
+
+    if (isUserInDataBase.length == 0 && !access_token) {
+        // если пользователя нет и нет токена авторизации - создаем нового пользователя
+        console.log('Пользователя нет в базе данных')
         try {
             const response = await ky
                 .post('https://61ed9b4c634f2f00170cec9d.mockapi.io/products', {
-                    json: userProductExample,
+                    json: productExample,
                 })
                 .json();
-            
+
+                dispatch(setAppData(response));
         } catch (error) {
             alert(error)
         }
-        
+    } else if (!!isUserInDataBase.length && !!access_token) {
+        // если есть пользователь и токен - загружаем данные в приложение
+        console.log('Пользователь есть в базе данных')
+        dispatch(setAppData(isUserInDataBase[0]));
+        localStorage.setItem('appData', JSON.stringify(isUserInDataBase));
     }
 
 }

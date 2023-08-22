@@ -6,15 +6,14 @@ import ProductCard from './components/productCard/ProductCard';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import { getAppData, extractTokenAndUsername, checkUserOnDataBase } from './logic/logic';
+import { extractTokenAndUsername, checkUserInDataBase } from './logic/logic';
 
 const App = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        checkUserOnDataBase()
-        // getAppData(dispatch);
         extractTokenAndUsername();
+        checkUserInDataBase(dispatch)
     }, []);
 
     return (

@@ -21,8 +21,7 @@ export const productSlice = createSlice({
             state.currentProductCard = action.payload
         },
         setAppData: (state, action) => {
-            const responseUserApp = action.payload
-                .filter(item => item.userName !== localStorage.getItem('userName'))[0];
+            const responseUserApp = action.payload;
             state.appData = {...responseUserApp};
         },
         setProductItem: (state, action) => {

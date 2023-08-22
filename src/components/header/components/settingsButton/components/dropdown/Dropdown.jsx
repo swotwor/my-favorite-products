@@ -5,6 +5,8 @@ const Dropdown = () => {
 
     const handleClickOnButton = () => {
         document.cookie = 'access_token' + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        localStorage.removeItem('userName');
+        localStorage.removeItem('appData');
     }
 
     return (

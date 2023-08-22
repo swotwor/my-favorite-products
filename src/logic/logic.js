@@ -160,11 +160,8 @@ export async function checkUserInDataBase(dispatch) {
         },
     };
 
-    console.log(!access_token);
-    console.log(!isUserInDataBase.length);
-
-    if (isUserInDataBase.length == 0 && !access_token) {
-        // если пользователя нет и нет токена авторизации - создаем нового пользователя
+    if (isUserInDataBase.length === 0 && !!access_token) {
+        // если пользователя нет в базе данных но есть токен авторизации - создаем нового пользователя
         console.log('Пользователя нет в базе данных')
         try {
             const response = await ky
@@ -177,8 +174,8 @@ export async function checkUserInDataBase(dispatch) {
         } catch (error) {
             alert(error)
         }
-    } else if (!!isUserInDataBase.length && !!access_token) {
-        // если есть пользователь и токен - загружаем данные в приложение
+    } else if (isUserInDataBase.length === 1 && !!access_token) {
+        // если есть пользователь в базе данных и есть токен авторизации - загружаем данные в приложение
         console.log('Пользователь есть в базе данных')
         dispatch(setAppData(isUserInDataBase[0]));
         localStorage.setItem('appData', JSON.stringify(isUserInDataBase));

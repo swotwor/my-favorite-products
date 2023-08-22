@@ -149,9 +149,10 @@ async function uploadImage(file) {
 export async function checkUserInDataBase(dispatch) {
     const appData = await getAppData(); // получаем всех пользователей из базы данных
     const userName = localStorage.getItem('userName'); // после авторизации, получаем userName пользователя
-    const isUserInDataBase = appData.filter(item => item.userName === userName); // ищем пользователя в базе данных
+    const parseUserName = JSON.parse(userName ? userName : null);
+    const isUserInDataBase = appData.filter(item => item.userName === parseUserName); // ищем пользователя в базе данных
     const productExample = {
-        userName,
+        userName: JSON.parse(userName ? userName : null),
         dataBase: {
             productItems: [],
             categories: [],

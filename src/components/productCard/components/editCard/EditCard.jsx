@@ -2,7 +2,7 @@ import style from './index.module.scss';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Resizer from 'react-image-file-resizer';
-import { addNewProduct, deleteProductRequest } from '../../../../logic/logic';
+import { addNewProduct, addNewTask, deleteProductRequest } from '../../../../logic/logic';
 
 const EditCard = ({ changeCardStatus, currentProducCard }) => {
     const dispatch = useDispatch();
@@ -29,11 +29,11 @@ const EditCard = ({ changeCardStatus, currentProducCard }) => {
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
 
     const handleClickOnButton = () => {
-        if (allValuesFilled && file) {
-            addNewProduct(file, stateProduct, dispatch, Resizer);
-        } else {
-            alert('Не всі поля заповнені');
-        }
+        // if (allValuesFilled && file) {
+        //     addNewProduct(file, stateProduct, dispatch, Resizer);
+        // } else {
+        //     alert('Не всі поля заповнені');
+        // }
     };
 
     const handleClickOnDelete = () => {

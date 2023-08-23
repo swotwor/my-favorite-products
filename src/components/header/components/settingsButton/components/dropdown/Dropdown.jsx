@@ -18,7 +18,7 @@ const Dropdown = () => {
                 </div>
             ) : (
                 <a href="https://api.imgur.com/oauth2/authorize?client_id=b3da1d0e7e463c1&response_type=token">
-                    Авторизація в DROPBOX
+                    Авторизація в системі
                 </a>
             )}
         </div>

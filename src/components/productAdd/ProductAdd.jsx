@@ -1,12 +1,13 @@
 import style from './index.module.scss';
 import Resizer from 'react-image-file-resizer';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import ProductAddHeader from './components/productAddHeader/ProductAddHeader';
 import { addNewProduct } from '../../logic/logic';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ProductAdd = () => {
-    const duspatch = useDispatch();
+    const dispatch = useDispatch();
+    const userData = useSelector(state => state.products.appData);
     const [stateProduct, setStateProduct] = useState({
         cost: '',
         title: '',
@@ -26,12 +27,11 @@ const ProductAdd = () => {
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
 
     const handleClickOnButton = () => {
-        // if (allValuesFilled && file) {
-        //     addNewProduct(file, stateProduct, duspatch, Resizer);
-        // } else {
-            //         alert('Не всі поля заповнені');
-            //     }
-        addNewProduct();
+        if (allValuesFilled && file) {
+            addNewProduct(file, stateProduct, dispatch, Resizer, userData);
+        } else {
+            alert('Не всі поля заповнені');
+        }
     };
 
     return (

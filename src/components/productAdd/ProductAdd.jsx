@@ -34,6 +34,7 @@ const ProductAdd = () => {
         }
     };
 
+
     return (
         <div className={style.wrapper}>
             <ProductAddHeader />

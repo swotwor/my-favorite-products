@@ -2,7 +2,7 @@ import style from './index.module.scss';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Resizer from 'react-image-file-resizer';
-import { addNewProduct, addNewTask, deleteProductRequest } from '../../../../logic/logic';
+import { addNewProduct, deleteProductRequest } from '../../../../logic/logic';
 
 const EditCard = ({ changeCardStatus, currentProducCard }) => {
     const dispatch = useDispatch();

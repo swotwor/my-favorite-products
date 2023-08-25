@@ -3,16 +3,15 @@ import { GoogleAuthProvider } from "firebase/auth";
 
 const API_KEY = import.meta.env.VITE_APP_KEY;
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: API_KEY,
-  authDomain: "myfavoritproduct.firebaseapp.com",
-  projectId: "myfavoritproduct",
-  storageBucket: "myfavoritproduct.appspot.com",
-  messagingSenderId: "871850347649",
-  appId: "1:871850347649:web:feaa65bac461fc70925180"
+  authDomain: "favoriteproduct-f0954.firebaseapp.com",
+  projectId: "favoriteproduct-f0954",
+  storageBucket: "favoriteproduct-f0954.appspot.com",
+  messagingSenderId: "382324806167",
+  appId: "1:382324806167:web:779352dc402126af3ac252"
 };
+
 
 export const app = initializeApp(firebaseConfig);
 export const googleAuthProvider = new GoogleAuthProvider();
-
-

@@ -14,18 +14,19 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
                     ...userData,
                     dataBase:{
                         productItems: [
+                            ...userData.dataBase.productItems,
                             {
+                                id: extractImageId(link),
+                                img: link,
                                 ...productInfo,
-                                img: link
                             }
                         ]
                     }
                 },
             })
             .json();
-            console.log(response);
         dispatch(setProductItem(response));
-        // window.location.replace('/');
+        window.location.replace('/');
     } catch (error) {
         console.log(error)
     }
@@ -214,4 +215,12 @@ export async function addNewTask(info) {
     })
     .json();
     console.log(response);
+}
+
+function extractImageId(url) {
+    const parts = url.split('/');
+    const lastPart = parts[parts.length - 1];
+
+    const id = lastPart.split('.')[0];
+    return  id;
 }

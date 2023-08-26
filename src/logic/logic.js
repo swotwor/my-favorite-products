@@ -18,7 +18,7 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
                         productItems: [
                             ...userData.dataBase.productItems,
                             {
-                                // id: '1',
+                                id: '1',
                                 img: linkImage,
                                 ...productInfo,
                             }

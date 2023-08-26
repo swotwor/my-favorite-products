@@ -23,8 +23,9 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
                 },
             })
             .json();
+            console.log(response);
         dispatch(setProductItem(response));
-        window.location.replace('/');
+        // window.location.replace('/');
     } catch (error) {
         console.log(error)
     }

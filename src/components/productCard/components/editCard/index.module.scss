@@ -9,6 +9,8 @@
         background-size: cover;
         margin-bottom: 10px;
         position: relative;
+        display: flex;
+        justify-content: center;
 
         button {
             background-color: white;
@@ -33,7 +35,7 @@
         font-size: 24px;
         background-color: white;
         padding: 5px;
-        margin: 5px;
+        margin: 5px 0;
         width: 100%;
         border-radius: 10px;
     }
@@ -43,21 +45,23 @@
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+    padding-bottom: 10px;
 
     button {
         font-size: 26px;
         padding: 5px 10px;
         border-radius: 10px;
         cursor: pointer;
+        color: white;
     }
 
     &_cancle {
-        background-color: green;
+        background-color: rgba(0, 128, 0, .7);
     }
     &_delete {
-        background-color: red;
+        background-color: rgba(255, 0, 0, .7);
     }
     &_save {
-        background-color: orange;
+        background-color: rgba(255, 166, 0, .7);
     }
 }

@@ -25,7 +25,10 @@ export const productSlice = createSlice({
             state.appData = {...responseUserApp};
         },
         setProductItem: (state, action) => {
-            state.productItems = [...state.productItems, action.payload]
+            state.appData.dataBase.productItems = [
+                ...state.appData.dataBase.productItems,
+                ...action.payload.dataBase.productItems
+            ]
         },
         deleteProduct: (state, action) => {
             state.productItems = [...state.productItems.filter(item => item.id !== action.payload.id)];

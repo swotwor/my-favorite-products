@@ -9,6 +9,8 @@
         background-size: cover;
         margin-bottom: 10px;
         position: relative;
+        display: flex;
+        justify-content: center;
 
         img {
             width: 100%;
@@ -17,7 +19,7 @@
             padding: 10px;
         }
     }
-
+    
     &_buttonChangeStatusCard {
         position: absolute;
         right: 20px;
@@ -28,6 +30,7 @@
         background-position: center;
         background-size: contain;
         background-repeat: no-repeat;
+        cursor: pointer;
     }
 
     &_header {

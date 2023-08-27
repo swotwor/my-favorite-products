@@ -1,4 +1,3 @@
-import AuthProvider from './components/auth/AuthProvider';
 import style from './index.module.scss';
 
 const Dropdown = () => {
@@ -12,8 +11,7 @@ const Dropdown = () => {
 
     return (
         <div className={style.dropdownWrapperSettings}>
-            <AuthProvider />
-            {/* {isAuth ? (
+            {isAuth ? (
                 <div className={style.dropdownWrapperSettings_account}>
                     <p>Ви авторизовані</p>
                     <button onClick={handleClickOnButton}>Вихід із аккаунту</button>
@@ -22,7 +20,7 @@ const Dropdown = () => {
                 <a href="https://api.imgur.com/oauth2/authorize?client_id=b3da1d0e7e463c1&response_type=token">
                     Авторизація в системі
                 </a>
-            )} */}
+            )}
         </div>
     );
 };

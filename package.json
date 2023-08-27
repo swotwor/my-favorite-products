@@ -13,8 +13,6 @@
     "@react-oauth/google": "^0.11.0",
     "@reduxjs/toolkit": "^1.9.5",
     "dropbox": "^10.34.0",
-    "firebase": "^10.3.0",
-    "git-filter-repo": "^0.0.30",
     "ky": "^0.33.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -1,13 +1,11 @@
 import ky from 'ky';
 import { setAppData, setProductItem, deleteProduct } from '../store/store';
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 const access_token = document.cookie.split(';')[0].split('=')[1];
-const fileName = `${Date.now()}`
 
 export async function addNewProduct(file = null, productInfo, dispatch, Resizer, userData) {
     const fileBeforCompression = await compressImage(file, Resizer);
-    const linkImage = await uploadImage(fileBeforCompression);
+    const { link } = await uploadImage(fileBeforCompression);
 
     try {
         const response = await ky
@@ -18,8 +16,8 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
                         productItems: [
                             ...userData.dataBase.productItems,
                             {
-                                id: '1',
-                                img: linkImage,
+                                id: extractImageId(link),
+                                img: link,
                                 ...productInfo,
                             }
                         ]
@@ -27,12 +25,20 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
                 },
             })
             .json();
-        // dispatch(setProductItem(response));
-        // window.location.replace('/');
-        console.log(response);
+        dispatch(setProductItem(response));
+        window.location.replace('/');
     } catch (error) {
         console.log(error)
     }
+}
+
+export async function changeUserData(id, userData) {
+    const response = await ky
+    .patch(`https://61ed9b4c634f2f00170cec9d.mockapi.io/products/${id}`, {
+        json: {userName: userData.userName, dataBase: userData.dataBase},
+    })
+    .json();
+    console.log(response);
 }
 
 export async function getAppData() {
@@ -143,15 +149,24 @@ async function compressImage(file, Resizer) {
     }
 }
 
-export async function uploadImage(file) {
-    const storage = getStorage();
-    const storageRef = ref(storage, fileName);
+async function uploadImage(file) {
+    const formData = new FormData();
+    formData.append('image', file);
 
-    uploadBytes(storageRef, file).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then(url => {
-            return url;
+    try {
+        const response = await ky
+        .post('https://api.imgur.com/3/image/', {
+            headers: {
+                authorization: `Bearer ${access_token}`,
+            },
+            body: formData,
         })
-    });
+        .json();
+
+        return response.data;
+    } catch (error) {
+        alert('Error', error);
+    }
 }
 
 export async function checkUserInDataBase(dispatch) {
@@ -192,8 +207,20 @@ export async function checkUserInDataBase(dispatch) {
 
 }
 
-// function extractImageId(url) {
-//     const startIndex = url.lastIndexOf('/') + 1; // Находим индекс последнего слеша
-//     const endIndex = url.lastIndexOf('.'); // Находим индекс точки перед расширением файла
-//     return url.substring(startIndex, endIndex); // Извлекаем часть строки между индексами
-//   }
+
+export async function addNewTask(info) {    
+    const response = await ky
+    .post('https://61ed9b4c634f2f00170cec9d.mockapi.io/products/1/tasks', {
+        json: info,
+    })
+    .json();
+    console.log(response);
+}
+
+function extractImageId(url) {
+    const parts = url.split('/');
+    const lastPart = parts[parts.length - 1];
+
+    const id = lastPart.split('.')[0];
+    return  id;
+}

@@ -5,15 +5,6 @@ import ProductAddHeader from './components/productAddHeader/ProductAddHeader';
 import { addNewProduct } from '../../logic/logic';
 import { useDispatch, useSelector } from 'react-redux';
 
-
-import { collection, getDocs, getDoc, addDoc } from "firebase/firestore"; 
-import { getFirestore } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import { app } from '../../firebase';
-// import { firebaseConfig } from '../../firebase';
-
-
-
 const ProductAdd = () => {
     const dispatch = useDispatch();
     const userData = useSelector(state => state.products.appData);
@@ -35,37 +26,13 @@ const ProductAdd = () => {
 
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
 
-    const handleClickOnButton = async () => {
-        // if (allValuesFilled && file) {
-        //     addNewProduct(file, stateProduct, dispatch, Resizer, userData);
-        // } else {
-        //     alert('Не всі поля заповнені');
-        // }
-
-        // const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        try {
-            const querySnapshot = await getDocs(collection(db, "swotwor"));
-            querySnapshot.forEach((doc) => {
-                console.log(doc);
-            });
-        } catch (error) {
-            console.log(error);
+    const handleClickOnButton = () => {
+        if (allValuesFilled && file) {
+            addNewProduct(file, stateProduct, dispatch, Resizer, userData);
+        } else {
+            alert('Не всі поля заповнені');
         }
-
-        // try {
-        //     const docRef = await addDoc(collection(db, "users"), {
-        //       first: "Ada",
-        //       last: "Lovelace",
-        //       born: 1815
-        //     });
-        //     console.log("Document written with ID: ", docRef.id);
-        //   } catch (e) {
-        //     console.error("Error adding document: ", e);
-        //   }
     };
-
 
     return (
         <div className={style.wrapper}>
@@ -73,6 +40,7 @@ const ProductAdd = () => {
             <p>Назва</p>
             <input
                 type="text"
+                maxLength={30}
                 value={stateProduct.title}
                 onChange={(event) => handleInputChange(event, 'title')}
             />

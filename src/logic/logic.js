@@ -5,7 +5,7 @@ const access_token = document.cookie.split(';')[0].split('=')[1];
 
 export async function addNewProduct(file = null, productInfo, dispatch, Resizer, userData) {
     const fileBeforCompression = await compressImage(file, Resizer);
-    const { link } = await uploadImage(fileBeforCompression);
+    const { link, deletehash } = await uploadImage(fileBeforCompression);
 
     try {
         const response = await ky
@@ -13,12 +13,14 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
                 json: {
                     ...userData,
                     dataBase:{
+                        ...userData.dataBase,
                         productItems: [
                             ...userData.dataBase.productItems,
                             {
                                 id: extractImageId(link),
                                 img: link,
                                 ...productInfo,
+                                deletehash,
                             }
                         ]
                     }
@@ -27,6 +29,38 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
             .json();
         dispatch(setProductItem(response));
         window.location.replace('/');
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function editCurrentProduct(stateProduct, dispatch, userData, changeCardStatus) {
+    const newProductList = userData.dataBase.productItems.map(item => {
+        if (item.id === stateProduct.id) {
+            return {
+                ...stateProduct,
+            };
+        } else {
+            return item;
+        }
+    });
+
+    try {
+        const response = await ky
+            .put(`https://61ed9b4c634f2f00170cec9d.mockapi.io/products/${userData.id}`, {
+                json: {
+                    ...userData,
+                    dataBase:{
+                        ...userData.dataBase,
+                        productItems: [...newProductList]
+                    }
+                },
+            })
+            .json();
+            console.log(response);
+        sessionStorage.setItem('productItem', JSON.stringify(...newProductList));
+        dispatch(setProductItem(response));
+        changeCardStatus();
     } catch (error) {
         console.log(error)
     }
@@ -207,20 +241,9 @@ export async function checkUserInDataBase(dispatch) {
 
 }
 
-
-export async function addNewTask(info) {    
-    const response = await ky
-    .post('https://61ed9b4c634f2f00170cec9d.mockapi.io/products/1/tasks', {
-        json: info,
-    })
-    .json();
-    console.log(response);
-}
-
 function extractImageId(url) {
     const parts = url.split('/');
     const lastPart = parts[parts.length - 1];
-
     const id = lastPart.split('.')[0];
     return  id;
 }

@@ -1,27 +1,29 @@
 // import style from './index.module.scss';
 import EditCard from './components/editCard/EditCard';
 import ViewCard from './components/viewCard/ViewCard';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { setCurrentProductCard } from '../../store/store';
 
 const ProductCard = () => {
+    const dispatch = useDispatch();
     const [editCard, setEditCard] = useState(false);
-    const [currentProducCard, setCurrentProductCard] = useState({});
     
     const changeCardStatus = () => {
         setEditCard(prev => !prev);
     };
     
     useEffect(() => {
-        setCurrentProductCard(
-            JSON.parse(sessionStorage.getItem('productItem'))
-            );
+        dispatch(setCurrentProductCard(
+            JSON.parse(sessionStorage.getItem('productItem')))
+        );
     }, []);
 
     return (
         <div className={''}>
             {editCard
-                ? <EditCard changeCardStatus={changeCardStatus} currentProducCard={currentProducCard}/>
-                : <ViewCard changeCardStatus={changeCardStatus} currentProducCard={currentProducCard}/>
+                ? <EditCard changeCardStatus={changeCardStatus} />
+                : <ViewCard changeCardStatus={changeCardStatus} />
             }
         </div>
     );

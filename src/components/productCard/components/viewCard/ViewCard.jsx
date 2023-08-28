@@ -1,7 +1,9 @@
 import style from './index.module.scss';
+import { useSelector } from 'react-redux';
 
-const ViewCard = ({ changeCardStatus, currentProducCard }) => {
-    const { title, img, cost, description, location } = currentProducCard;
+const ViewCard = ({ changeCardStatus }) => {
+    const { currentProductCard } = useSelector(state => state.products);
+    const { title, img, cost, description, location } = currentProductCard;
 
     return (
         <div className={style.viewCard}>

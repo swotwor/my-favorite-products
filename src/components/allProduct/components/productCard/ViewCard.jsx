@@ -1,12 +1,7 @@
 import style from './index.module.scss';
-import { useEffect } from 'react';
 
 const ViewCard = ({ productItem }) => {
     const { title, img, cost, description, location } = productItem;
-
-    useEffect(() => {
-        sessionStorage.setItem('productItem', JSON.stringify(productItem));
-    },[])
 
     return (
         <div className={style.viewCard}>

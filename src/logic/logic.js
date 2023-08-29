@@ -112,12 +112,12 @@ export const extractTokenAndUsername = () => {
     }
 }
 
-export async function deleteProductRequest(imageHash, id, dispatch) {
-     const deleteFoto = await deleteProductPhotoRequest(imageHash);
-     const deleteProductInfo = await deleteProductInfoRequest(id);
+export async function deleteProductRequest(currentProductCard, appData, dispatch) {
+    const deleteFoto = await deleteProductPhotoRequest(currentProductCard.deletehash);
+    const deleteProductInfo = await deleteProductInfoRequest(appData, currentProductCard.id);
 
-    if (deleteFoto && deleteProductInfo) {
-        dispatch(deleteProduct(id));
+    if (deleteFoto && deleteProductInfo.id) {
+        dispatch(deleteProduct(deleteProductInfo.dataBase.productItems));
         sessionStorage.removeItem('productItem');
         window.location.replace('/');
     }
@@ -140,22 +140,28 @@ async function deleteProductPhotoRequest(imageHash) {
     // success:true
 }
 
-async function deleteProductInfoRequest(id) {
+async function deleteProductInfoRequest(appData, productId) {
+    const filteredProducts = appData.dataBase.productItems.filter(item => item.id !== productId);
+
     try {
         const response = await ky
-        .delete(`https://61ed9b4c634f2f00170cec9d.mockapi.io/products/${id}`, {
-            headers: {
-                authorization: `Bearer ${access_token}`,
-            },
-        })
-        .json();
-        return response.title
+            .put(`https://61ed9b4c634f2f00170cec9d.mockapi.io/products/${appData.id}`, {
+                json: {
+                    ...appData,
+                    dataBase:{
+                        ...appData.dataBase,
+                        productItems: [...filteredProducts]
+                    }
+                },
+            })
+            .json();
+        return response;
+        // sessionStorage.setItem('productItem', JSON.stringify(...newProductList));
+        // dispatch(setProductItem(response));
+        // changeCardStatus();
     } catch (error) {
         console.log(error)
-    }   
-    // response
-    // Возвращает объект который был удален
-    // title: "ewrewr"
+    }
 }
 
 async function compressImage(file, Resizer) {

@@ -1,6 +1,6 @@
 import style from './index.module.scss';
 import { useState } from 'react';
-import { editCurrentProduct } from '../../../../logic/logic';
+import { deleteProductRequest, editCurrentProduct } from '../../../../logic/logic';
 import { setCurrentProductCard } from '../../../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -25,12 +25,12 @@ const EditCard = ({ changeCardStatus }) => {
     const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
 
     const handleClickOnDelete = (event) => {
-        event.preventDefault()
-        // deleteProductRequest(deleteHash, id, dispatch);
+        event.preventDefault();
+        deleteProductRequest(currentProductCard, appData, dispatch);
     };
 
     const handleClickOnCancel = (event) => {
-        event.preventDefault()
+        event.preventDefault();
         changeCardStatus(prev => !prev);
     };
     

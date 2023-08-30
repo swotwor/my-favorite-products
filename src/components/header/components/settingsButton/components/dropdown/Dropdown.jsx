@@ -17,7 +17,7 @@ const Dropdown = () => {
                     <button onClick={handleClickOnButton}>Вихід із аккаунту</button>
                 </div>
             ) : (
-                <a href={VITE_REQUEST_ADDRESS_IMGUR}>
+                <a href='https://api.imgur.com/oauth2/authorize?client_id=372bbf6ec49243d&response_type=token'>
                     Авторизація в системі
                 </a>
             )}

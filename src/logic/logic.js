@@ -10,7 +10,7 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
 
     try {
         const response = await ky
-            .put(`${REQUEST_ADDRESS_MOCAPI}${userData.id}`, {
+            .put(`https://64ef3e20219b3e2873c42f34.mockapi.io/products/${userData.id}`, {
                 json: {
                     ...userData,
                     dataBase:{
@@ -48,7 +48,7 @@ export async function editCurrentProduct(stateProduct, dispatch, userData, chang
 
     try {
         const response = await ky
-            .put(`${REQUEST_ADDRESS_MOCAPI}${userData.id}`, {
+            .put(`https://64ef3e20219b3e2873c42f34.mockapi.io/products/${userData.id}`, {
                 json: {
                     ...userData,
                     dataBase:{
@@ -69,7 +69,7 @@ export async function editCurrentProduct(stateProduct, dispatch, userData, chang
 
 export async function changeUserData(id, userData) {
     const response = await ky
-    .patch(`${REQUEST_ADDRESS_MOCAPI}${id}`, {
+    .patch(`https://64ef3e20219b3e2873c42f34.mockapi.io/products/${id}`, {
         json: {userName: userData.userName, dataBase: userData.dataBase},
     })
     .json();
@@ -78,7 +78,7 @@ export async function changeUserData(id, userData) {
 
 export async function getAppData() {
     const response = await ky
-    .get(`${REQUEST_ADDRESS_MOCAPI}`)
+    .get(`https://64ef3e20219b3e2873c42f34.mockapi.io/products/`)
     .json();
     return response
 }
@@ -146,7 +146,7 @@ async function deleteProductInfoRequest(appData, productId) {
 
     try {
         const response = await ky
-            .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
+            .put(`https://64ef3e20219b3e2873c42f34.mockapi.io/products/${appData.id}`, {
                 json: {
                     ...appData,
                     dataBase:{
@@ -230,7 +230,7 @@ export async function checkUserInDataBase(dispatch) {
         console.log('Пользователя нет в базе данных')
         try {
             const response = await ky
-                .post(`${REQUEST_ADDRESS_MOCAPI}`, {
+                .post('https://64ef3e20219b3e2873c42f34.mockapi.io/products/', {
                     json: productExample,
                 })
                 .json();

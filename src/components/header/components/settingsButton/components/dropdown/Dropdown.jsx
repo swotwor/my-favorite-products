@@ -1,4 +1,5 @@
 import style from './index.module.scss';
+const REQUEST_ADDRESS_MOCAPI = import.meta.env.VITE_REQUEST_ADDRESS_MOCAPI;
 
 const Dropdown = () => {
     const isAuth = document.cookie.split(';')[0].split('=')[1];
@@ -17,7 +18,8 @@ const Dropdown = () => {
                     <button onClick={handleClickOnButton}>Вихід із аккаунту</button>
                 </div>
             ) : (
-                <a href="https://api.imgur.com/oauth2/authorize?client_id=b3da1d0e7e463c1&response_type=token">
+                // <a href="https://api.imgur.com/oauth2/authorize?client_id=b3da1d0e7e463c1&response_type=token">
+                <a href={REQUEST_ADDRESS_MOCAPI}>
                     Авторизація в системі
                 </a>
             )}

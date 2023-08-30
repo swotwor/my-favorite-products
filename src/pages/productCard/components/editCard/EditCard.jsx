@@ -1,8 +1,8 @@
 import style from './index.module.scss';
 import { useState } from 'react';
-import { deleteProductRequest, editCurrentProduct } from '../../../../logic/logic';
 import { setCurrentProductCard } from '../../../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
+import { deleteProductRequest, editCurrentProduct } from '../../../../logic/logic';
 
 const EditCard = ({ changeCardStatus }) => {
     const dispatch = useDispatch();

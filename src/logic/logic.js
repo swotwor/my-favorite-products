@@ -1,16 +1,17 @@
 import ky from 'ky';
-import { setAppData, setProductItem, deleteProduct } from '../store/store';
+import { setAppData, setProductItem, deleteProduct, setLoader } from '../store/store';
+import { REQUEST_ADDRESS_MOCAPI } from '../../state';
 
 const access_token = document.cookie.split(';')[0].split('=')[1];
-const REQUEST_ADDRESS_MOCAPI = import.meta.env.VITE_REQUEST_ADDRESS_MOCAPI;
 
 export async function addNewProduct(file = null, productInfo, dispatch, Resizer, userData) {
+    dispatch(setLoader());
     const fileBeforCompression = await compressImage(file, Resizer);
-    const { link, deletehash } = await uploadImage(fileBeforCompression);
+    const { link, deletehash } = await uploadImage(fileBeforCompression, dispatch);
 
     try {
         const response = await ky
-            .put(`https://64ef3e20219b3e2873c42f34.mockapi.io/products/${userData.id}`, {
+            .put(`${REQUEST_ADDRESS_MOCAPI}${userData.id}`, {
                 json: {
                     ...userData,
                     dataBase:{
@@ -29,13 +30,16 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
             })
             .json();
         dispatch(setProductItem(response));
+        dispatch(setLoader());
         window.location.replace('/');
     } catch (error) {
-        console.log(error)
+        dispatch(setLoader());
+        alert(error);
     }
 }
 
 export async function editCurrentProduct(stateProduct, dispatch, userData, changeCardStatus) {
+    dispatch(setLoader());
     const newProductList = userData.dataBase.productItems.map(item => {
         if (item.id === stateProduct.id) {
             return {
@@ -48,7 +52,7 @@ export async function editCurrentProduct(stateProduct, dispatch, userData, chang
 
     try {
         const response = await ky
-            .put(`https://64ef3e20219b3e2873c42f34.mockapi.io/products/${userData.id}`, {
+            .put(`${REQUEST_ADDRESS_MOCAPI}${userData.id}`, {
                 json: {
                     ...userData,
                     dataBase:{
@@ -58,44 +62,21 @@ export async function editCurrentProduct(stateProduct, dispatch, userData, chang
                 },
             })
             .json();
-            console.log(response);
         sessionStorage.setItem('productItem', JSON.stringify(...newProductList));
         dispatch(setProductItem(response));
+        dispatch(setLoader());
         changeCardStatus();
     } catch (error) {
-        console.log(error)
+        dispatch(setLoader());
+        console.log(error);
     }
-}
-
-export async function changeUserData(id, userData) {
-    const response = await ky
-    .patch(`https://64ef3e20219b3e2873c42f34.mockapi.io/products/${id}`, {
-        json: {userName: userData.userName, dataBase: userData.dataBase},
-    })
-    .json();
-    console.log(response);
 }
 
 export async function getAppData() {
     const response = await ky
-    .get(`https://64ef3e20219b3e2873c42f34.mockapi.io/products/`)
+    .get(`${REQUEST_ADDRESS_MOCAPI}`)
     .json();
     return response
-}
-
-export async function getCurrentAccount() {
-    try {
-        const response = await ky
-        .post('https://api.imgur.com/3/image/', {
-            headers: {
-                authorization: 'Bearer 7d5c54371b135406cd08087819ec156da4b9a872',
-            },
-        })
-        .json();
-        console.log(response);
-    } catch (error) {
-        console.log('Error', error);
-    }
 }
 
 export const extractTokenAndUsername = () => {
@@ -114,17 +95,21 @@ export const extractTokenAndUsername = () => {
 }
 
 export async function deleteProductRequest(currentProductCard, appData, dispatch) {
-    const deleteFoto = await deleteProductPhotoRequest(currentProductCard.deletehash);
-    const deleteProductInfo = await deleteProductInfoRequest(appData, currentProductCard.id);
+    dispatch(setLoader());
+    const deleteFoto = await deleteProductPhotoRequest(currentProductCard.deletehash, dispatch);
+    const deleteProductInfo = await deleteProductInfoRequest(appData, currentProductCard.id, dispatch);
 
     if (deleteFoto && deleteProductInfo.id) {
         dispatch(deleteProduct(deleteProductInfo.dataBase.productItems));
         sessionStorage.removeItem('productItem');
+        dispatch(setLoader());
         window.location.replace('/');
+    } else {
+        dispatch(setLoader());
     }
 }
 
-async function deleteProductPhotoRequest(imageHash) {
+async function deleteProductPhotoRequest(imageHash, dispatch) {
     try {
         const response = await ky
         .delete(`https://api.imgur.com/3/image/${imageHash}`, {
@@ -135,18 +120,17 @@ async function deleteProductPhotoRequest(imageHash) {
         .json();
         return response.success
     } catch (error) {
-        console.log(error)
-    }   
-    // response
-    // success:true
+        alert(error);
+        dispatch(setLoader());
+    }
 }
 
-async function deleteProductInfoRequest(appData, productId) {
+async function deleteProductInfoRequest(appData, productId, dispatch) {
     const filteredProducts = appData.dataBase.productItems.filter(item => item.id !== productId);
 
     try {
         const response = await ky
-            .put(`https://64ef3e20219b3e2873c42f34.mockapi.io/products/${appData.id}`, {
+            .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
                 json: {
                     ...appData,
                     dataBase:{
@@ -157,11 +141,9 @@ async function deleteProductInfoRequest(appData, productId) {
             })
             .json();
         return response;
-        // sessionStorage.setItem('productItem', JSON.stringify(...newProductList));
-        // dispatch(setProductItem(response));
-        // changeCardStatus();
     } catch (error) {
-        console.log(error)
+        dispatch(setLoader());
+        alert(error);
     }
 }
 
@@ -186,11 +168,11 @@ async function compressImage(file, Resizer) {
         const image = await resizeFile(file);
         return image;
     } catch (err) {
-        console.log(err);
+        alert(err);
     }
 }
 
-async function uploadImage(file) {
+async function uploadImage(file, dispatch) {
     const formData = new FormData();
     formData.append('image', file);
 
@@ -206,6 +188,7 @@ async function uploadImage(file) {
 
         return response.data;
     } catch (error) {
+        dispatch(setLoader());
         alert('Error', error);
     }
 }
@@ -230,11 +213,10 @@ export async function checkUserInDataBase(dispatch) {
         console.log('Пользователя нет в базе данных')
         try {
             const response = await ky
-                .post('https://64ef3e20219b3e2873c42f34.mockapi.io/products/', {
+                .post(`${REQUEST_ADDRESS_MOCAPI}`, {
                     json: productExample,
                 })
                 .json();
-
                 dispatch(setAppData(response));
         } catch (error) {
             alert(error)

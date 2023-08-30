@@ -1,0 +1,21 @@
+.wrapperLoader {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+.loader {
+    width: 100px;
+    height: 100px;
+    background-image: url('../../assets/Spin-0.9s-200px.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}

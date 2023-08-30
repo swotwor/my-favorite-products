@@ -1,15 +1,18 @@
 import './App.css';
 import Header from './components/header/Header';
-import AllProduct from './components/allProduct/AllProduct';
-import ProductAdd from './components/productAdd/ProductAdd';
-import ProductCard from './components/productCard/ProductCard';
+import Footer from './components/footer/Footer';
+import Loader from './components/loader/Loader';
+import AllProduct from './pages/allProduct/AllProduct';
+import ProductAdd from './pages/productAdd/ProductAdd';
+import ProductCard from './pages/productCard/ProductCard';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { extractTokenAndUsername, checkUserInDataBase } from './logic/logic';
 
 const App = () => {
     const dispatch = useDispatch();
+    const loader = useSelector(state => state.products.loader);
 
     useEffect(() => {
         extractTokenAndUsername();
@@ -24,6 +27,12 @@ const App = () => {
                 <Route path='/product_add' element={<ProductAdd />}/>
                 <Route path='/product_card' element={<ProductCard />}/>
             </Routes>
+            {
+                loader
+                    ? <Loader />
+                    : null
+            }
+            <Footer />
         </div>
     );
 };

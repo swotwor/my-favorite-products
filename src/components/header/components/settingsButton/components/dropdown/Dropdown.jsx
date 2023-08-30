@@ -1,8 +1,10 @@
+import { REQUEST_ADDRESS_IMGUR } from '../../../../../../../state';
 import style from './index.module.scss';
 
+
 const Dropdown = () => {
-    const VITE_REQUEST_ADDRESS_IMGUR = import.meta.env.VITE_REQUEST_ADDRESS_IMGUR;
     const isAuth = document.cookie.split(';')[0].split('=')[1];
+
     const handleClickOnButton = () => {
         document.cookie = 'access_token' + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         localStorage.removeItem('userName');
@@ -17,7 +19,7 @@ const Dropdown = () => {
                     <button onClick={handleClickOnButton}>Вихід із аккаунту</button>
                 </div>
             ) : (
-                <a href='https://api.imgur.com/oauth2/authorize?client_id=372bbf6ec49243d&response_type=token'>
+                <a href={REQUEST_ADDRESS_IMGUR}>
                     Авторизація в системі
                 </a>
             )}

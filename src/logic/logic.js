@@ -2,6 +2,7 @@ import ky from 'ky';
 import { setAppData, setProductItem, deleteProduct } from '../store/store';
 
 const access_token = document.cookie.split(';')[0].split('=')[1];
+const REQUEST_ADDRESS_MOCAPI = import.meta.env.VITE_REQUEST_ADDRESS_MOCAPI;
 
 export async function addNewProduct(file = null, productInfo, dispatch, Resizer, userData) {
     const fileBeforCompression = await compressImage(file, Resizer);
@@ -9,7 +10,7 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
 
     try {
         const response = await ky
-            .put(`https://61ed9b4c634f2f00170cec9d.mockapi.io/products/${userData.id}`, {
+            .put(`${REQUEST_ADDRESS_MOCAPI}${userData.id}`, {
                 json: {
                     ...userData,
                     dataBase:{

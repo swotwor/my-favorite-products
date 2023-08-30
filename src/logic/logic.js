@@ -48,7 +48,7 @@ export async function editCurrentProduct(stateProduct, dispatch, userData, chang
 
     try {
         const response = await ky
-            .put(`https://61ed9b4c634f2f00170cec9d.mockapi.io/products/${userData.id}`, {
+            .put(`${REQUEST_ADDRESS_MOCAPI}${userData.id}`, {
                 json: {
                     ...userData,
                     dataBase:{
@@ -69,7 +69,7 @@ export async function editCurrentProduct(stateProduct, dispatch, userData, chang
 
 export async function changeUserData(id, userData) {
     const response = await ky
-    .patch(`https://61ed9b4c634f2f00170cec9d.mockapi.io/products/${id}`, {
+    .patch(`${REQUEST_ADDRESS_MOCAPI}${id}`, {
         json: {userName: userData.userName, dataBase: userData.dataBase},
     })
     .json();
@@ -78,7 +78,7 @@ export async function changeUserData(id, userData) {
 
 export async function getAppData() {
     const response = await ky
-    .get('https://61ed9b4c634f2f00170cec9d.mockapi.io/products')
+    .get(`${REQUEST_ADDRESS_MOCAPI}`)
     .json();
     return response
 }
@@ -146,7 +146,7 @@ async function deleteProductInfoRequest(appData, productId) {
 
     try {
         const response = await ky
-            .put(`https://61ed9b4c634f2f00170cec9d.mockapi.io/products/${appData.id}`, {
+            .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
                 json: {
                     ...appData,
                     dataBase:{
@@ -230,7 +230,7 @@ export async function checkUserInDataBase(dispatch) {
         console.log('Пользователя нет в базе данных')
         try {
             const response = await ky
-                .post('https://61ed9b4c634f2f00170cec9d.mockapi.io/products', {
+                .post(`${REQUEST_ADDRESS_MOCAPI}`, {
                     json: productExample,
                 })
                 .json();

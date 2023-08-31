@@ -23,13 +23,18 @@ const AllProduct = () => {
             <div className={style.productCardHeader}>
                 Всі продукти
             </div>
-            {app.productItems.map(productItem => {
-                return (
-                    <Link to='/product_card' key={productItem.id} onClick={() => handleClick(productItem)}>
-                        <ViewCard productItem={productItem}/>
-                    </Link>
-                );
-            })}
+            {
+                app.productItems.length
+                ? app.productItems.map(productItem => {
+                    return (
+                        <Link to='/product_card' key={productItem.id} onClick={() => handleClick(productItem)}>
+                            <ViewCard productItem={productItem}/>
+                        </Link>
+                    );
+                })
+                : <p>Ще немає продуктів</p>
+            
+            }
         </div>
     );
 };

@@ -2,6 +2,7 @@ import './App.css';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import Loader from './components/loader/Loader';
+import Lists from './pages/lists/Lists';
 import AllProduct from './pages/allProduct/AllProduct';
 import ProductAdd from './pages/productAdd/ProductAdd';
 import ProductCard from './pages/productCard/ProductCard';
@@ -26,6 +27,7 @@ const App = () => {
                 <Route path='/' element={<AllProduct />}/>
                 <Route path='/product_add' element={<ProductAdd />}/>
                 <Route path='/product_card' element={<ProductCard />}/>
+                <Route path='/lists' element={<Lists />}/>
             </Routes>
             {
                 loader

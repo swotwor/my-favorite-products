@@ -1,5 +1,6 @@
 Used: ReactJS, Redux-Toolkit, React-Router-Dom, SASS, Ky
 
+For developers: if you want use in localhost, you must go in state.js and change params
 
 Вітаю.
 

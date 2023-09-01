@@ -236,3 +236,7 @@ function extractImageId(url) {
     const id = lastPart.split('.')[0];
     return  id;
 }
+
+export function filteredListProduct() {
+    
+}

@@ -1,5 +1,5 @@
 import style from './index.module.scss';
-import ViewCard from './components/productCard/ViewCard';
+import ViewCard from '../../components/productCard/ViewCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setCurrentProductCard } from '../../store/store';

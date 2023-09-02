@@ -1,12 +1,14 @@
 import style from './index.module.scss';
 import ViewCard from '../../../../components/productCard/ViewCard';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { isProductSelected } from '../../../../logic/logic';
+import { useDispatch, useSelector } from 'react-redux';
+import { addListRequest, isProductSelected } from '../../../../logic/logic';
 
 const AddList = ({ setEditMode }) => {
+    const dispatch = useDispatch();
     const [listState, setListState] = useState({title: '', productList: []});
-    const allProducts = useSelector(state => state.products.appData.dataBase.productItems);
+    const { appData } = useSelector(state => state.products);
+    const { productItems } = appData.dataBase;
 
     const handleChangeInput = (event) => {
         setListState({
@@ -36,7 +38,7 @@ const AddList = ({ setEditMode }) => {
     };
 
     const handleClickOnSaveButton = () => {
-
+        addListRequest(dispatch, listState, appData, setEditMode);
     };
     const handleClickOnCancelButton = () => {
         setEditMode(false);
@@ -46,7 +48,7 @@ const AddList = ({ setEditMode }) => {
         <div className={style.addListWrapper}>
             <input type="text" placeholder='Назва списку' onChange={handleChangeInput} value={listState.title}/>
             {
-                allProducts.map(item =>
+                productItems.map(item =>
                     <div
                         key={item.id}
                         className={style.addListWrapper_card}

@@ -8,23 +8,23 @@ const Lists = () => {
     const [editMode, setEditMode] = useState(false);
     const lists = useSelector(state => state.products.appData.dataBase.lists);
 
+    console.log(lists);
+
     const handleClick = () => {
         setEditMode(true);
     };
 
     return (
         <div className={style.listsWrapper}>
+            <button className={style.listsWrapper_button} onClick={handleClick}>
+                Додати список
+            </button>
             {
                 editMode
                 ? <AddList setEditMode={setEditMode}/>
                 : <>
-                    <button className={style.listsWrapper_button} onClick={handleClick}>
-                        Додати список
-                    </button>
                     {
-                        lists.map(listItem => {
-                            <ListItem listItem={listItem}/>
-                        })
+                        lists.map(listItem => <ListItem listItem={listItem}/>)
                     }
                 </>
             }

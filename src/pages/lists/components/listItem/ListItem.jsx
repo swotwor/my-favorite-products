@@ -1,8 +1,15 @@
+import style from './index.module.scss';
+import ViewCard from '../../../../components/productCard/ViewCard';
 
-const ListItem = () => {
+const ListItem = ({ listItem }) => {
+    const { title, productList } = listItem;
+
     return (
-        <div>
-            
+        <div className={style.listItemWrapper}>
+            <div className={style.listItemWrapper_inner}>
+                <p className={style.listItemWrapper_title}>{title}</p>
+                {/* <ViewCard productItem={productList}/> */}
+            </div>
         </div>
     );
 };

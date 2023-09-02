@@ -18,6 +18,9 @@ export const productSlice = createSlice({
     name: 'products', 
     initialState,
     reducers: {
+        setList: (state, action) => {
+            state.appData = action.payload;
+        },
         setLoader: (state) => {
             state.loader = !state.loader;
         },
@@ -41,6 +44,7 @@ export const productSlice = createSlice({
 });
 
 export const {
+    setList,
     setLoader,
     setAppData,
     deleteProduct,

@@ -1,5 +1,5 @@
 import ky from 'ky';
-import { setAppData, setProductItem, deleteProduct, setLoader } from '../store/store';
+import { setAppData, setProductItem, deleteProduct, setLoader, setList } from '../store/store';
 import { REQUEST_ADDRESS_MOCAPI } from '../../state';
 
 const access_token = document.cookie.split(';')[0].split('=')[1];
@@ -269,6 +269,32 @@ export async function addNewList(file = null, productInfo, dispatch, Resizer, us
         dispatch(setProductItem(response));
         dispatch(setLoader());
         window.location.replace('/');
+    } catch (error) {
+        dispatch(setLoader());
+        alert(error);
+    }
+}
+
+export async function addListRequest (dispatch, listState, appData, setEditMode) {
+    dispatch(setLoader());
+    try {
+        const response = await ky
+            .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
+                json: {
+                    ...appData,
+                    dataBase:{
+                        ...appData.dataBase,
+                        lists: [
+                            ...appData.dataBase.lists,
+                            listState,
+                        ]
+                    }
+                },
+            })
+            .json();
+        dispatch(setList(response));
+        dispatch(setLoader());
+        setEditMode();
     } catch (error) {
         dispatch(setLoader());
         alert(error);

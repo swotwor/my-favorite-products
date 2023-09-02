@@ -237,6 +237,40 @@ function extractImageId(url) {
     return  id;
 }
 
-export function filteredListProduct() {
-    
+export function isProductSelected(listState, productCard) {
+    return listState.productList?.some(item => item.id === productCard);
+}
+
+export async function addNewList(file = null, productInfo, dispatch, Resizer, userData) {
+    dispatch(setLoader());
+    const fileBeforCompression = await compressImage(file, Resizer);
+    const { link, deletehash } = await uploadImage(fileBeforCompression, dispatch);
+
+    try {
+        const response = await ky
+            .put(`${REQUEST_ADDRESS_MOCAPI}${userData.id}`, {
+                json: {
+                    ...userData,
+                    dataBase:{
+                        ...userData.dataBase,
+                        productItems: [
+                            ...userData.dataBase.productItems,
+                            {
+                                id: extractImageId(link),
+                                img: link,
+                                ...productInfo,
+                                deletehash,
+                            }
+                        ]
+                    }
+                },
+            })
+            .json();
+        dispatch(setProductItem(response));
+        dispatch(setLoader());
+        window.location.replace('/');
+    } catch (error) {
+        dispatch(setLoader());
+        alert(error);
+    }
 }

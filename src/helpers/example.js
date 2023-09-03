@@ -12,45 +12,36 @@ export const userDataExemple =  {
     "userName": "Swotwor",
     "dataBase": {
      "productItems": [
-      {
-       "id": "xuueScb",
-       "img": "https://i.imgur.com/xuueScb.jpg",
-       "cost": "4321",
-       "title": "3241",
-       "location": "4321",
-       "description": "4231",
-       "deletehash": "bzNXzfX6hKhPOhY"
-      },
-      {
-       "id": "BP7JxZW",
-       "img": "https://i.imgur.com/BP7JxZW.jpg",
-       "cost": "342",
-       "title": "324",
-       "location": "2d132",
-       "description": "213d423",
-       "deletehash": "u3SKYGANLOPujax"
-      },
-      {
-       "id": "iioV7Qp",
-       "img": "https://i.imgur.com/iioV7Qp.jpg",
-       "cost": "4321",
-       "title": "fdfdsaf",
-       "location": "23c",
-       "description": "2d32",
-       "deletehash": "91fUoHQ5Oi6olS6"
-      },
-      {
-       "id": "2Btxajb",
-       "img": "https://i.imgur.com/2Btxajb.jpg",
-       "cost": "342",
-       "title": "dsabdsf",
-       "location": "adb",
-       "description": "2q34v34vt",
-       "deletehash": "4cJ7nN99hy7OZ8j"
-      }
+        {
+            "id": "JdsUsia",
+            "img": "https://i.imgur.com/JdsUsia.jpg",
+            "cost": "1",
+            "title": "1",
+            "location": "1",
+            "description": "1",
+            "deletehash": "p8FYc5MDGR3fXHQ"
+        },
+        {
+            "id": "2WUd4pO",
+            "img": "https://i.imgur.com/2WUd4pO.jpg",
+            "cost": "2",
+            "title": "2",
+            "location": "2",
+            "description": "2",
+            "deletehash": "HrmcZ8J6K1W1fHk"
+        },
+        {
+            "id": "sq2qk60",
+            "img": "https://i.imgur.com/sq2qk60.jpg",
+            "cost": "3",
+            "title": "3",
+            "location": "3",
+            "description": "3",
+            "deletehash": "3jTr8F835HZAI6c"
+        }
      ],
      "categories": [],
      "lists": [],
-     "recipes": []
+     "recipes": [],
     }
    }

@@ -20,7 +20,7 @@ const AllProduct = () => {
     
     return (
         <div className={style.allProduct}>
-            <div className={style.productCardHeader}>
+            <div className={style.allProduct_header}>
                 Всі продукти
             </div>
             {
@@ -32,7 +32,7 @@ const AllProduct = () => {
                         </Link>
                     );
                 })
-                : <p>Ще немає продуктів</p>
+                : <p className={style.allProduct_noProducts}>Ще немає продуктів</p>
             
             }
         </div>

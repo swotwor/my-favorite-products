@@ -1,7 +1,18 @@
-.productCardHeader {
-    font-size: 26px;
-    font-weight: 600;
-    color: white;
-    line-height: 35px;
-    text-align: center;
+.allProduct {
+    
+    &_header {
+        font-size: 26px;
+        font-weight: 600;
+        color: white;
+        line-height: 35px;
+        text-align: center;
+    }
+
+    &_noProducts {
+        font-size: 26px;
+        font-weight: 600;
+        color: rgba(255, 0, 0, .7);
+        line-height: 35px;
+        text-align: center;
+    }
 }

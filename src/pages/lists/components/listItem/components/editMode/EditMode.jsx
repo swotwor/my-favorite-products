@@ -2,7 +2,7 @@ import style from './index.module.scss';
 import ViewCard from '../../../../../../components/productCard/ViewCard';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addListRequest, editListRequest, isProductSelected } from '../../../../../../logic/logic';
+import { deleteListRequest, editListRequest, isProductSelected } from '../../../../../../logic/logic';
 
 const EditMode = ({ handleClickOnEditList, listItem }) => {
     const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
             title: event.target.value,
         })
     };
-    const handleClickOnCard = (productItem) => {
+    const handleClickOnCard = productItem => {
         const isProductExist =  listState.productList?.some(item => item.id === productItem.id);
 
         if (!isProductExist) {
@@ -42,9 +42,7 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
         handleClickOnEditList();
     };
     const handleClickOnDeleteButton = () => {
-
-
-        handleClickOnEditList();
+        deleteListRequest(dispatch, listState, appData, handleClickOnEditList);
     };
     const handleClickOnSaveButton = () => {
         editListRequest(dispatch, listState, appData, handleClickOnEditList);

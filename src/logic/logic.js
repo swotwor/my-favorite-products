@@ -142,6 +142,14 @@ async function deleteProductPhotoRequest(imageHash, dispatch) {
 
 async function deleteProductInfoRequest(appData, productId, dispatch) {
     const filteredProducts = appData.dataBase.productItems.filter(item => item.id !== productId);
+    const filteredListProducts = appData.dataBase.lists.map(mapItem => {
+        return {
+            ...mapItem,
+            productList: mapItem.productList.filter(filterItem => filterItem.id !== productId)
+        }
+    })
+
+    console.log(filteredListProducts);
 
     try {
         const response = await ky
@@ -150,7 +158,8 @@ async function deleteProductInfoRequest(appData, productId, dispatch) {
                     ...appData,
                     dataBase:{
                         ...appData.dataBase,
-                        productItems: [...filteredProducts]
+                        productItems: [...filteredProducts],
+                        lists: [...filteredListProducts]
                     }
                 },
             })
@@ -309,6 +318,40 @@ export async function editListRequest(dispatch, listState, appData, handleClickO
         dispatch(setEditAppData(response));
         dispatch(setLoader());
         handleClickOnEditList();
+    } catch (error) {
+        dispatch(setLoader());
+        alert(error);
+    }
+}
+
+export async function deleteListRequest(dispatch, listState, appData, handleClickOnEditList) {
+    dispatch(setLoader());
+    const newLists = appData.dataBase.lists.map(item => {
+        if(item.id === listState.id) {
+            return listState;
+        } else {
+            return item;
+        }
+    });
+
+    try {
+        const response = await ky
+            .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
+                json: {
+                    ...appData,
+                    dataBase:{
+                        ...appData.dataBase,
+                        lists: [
+                            ...newLists,
+                        ]
+                    }
+                },
+            })
+            .json();
+        dispatch(setEditAppData(response));
+        dispatch(setLoader());
+        handleClickOnEditList();
+        window.location.replace('/lists');
     } catch (error) {
         dispatch(setLoader());
         alert(error);

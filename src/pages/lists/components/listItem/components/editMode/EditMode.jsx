@@ -42,7 +42,7 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
         handleClickOnEditList();
     };
     const handleClickOnDeleteButton = () => {
-        deleteListRequest(dispatch, listState, appData, handleClickOnEditList);
+        deleteListRequest(dispatch, id, appData);
     };
     const handleClickOnSaveButton = () => {
         editListRequest(dispatch, listState, appData, handleClickOnEditList);

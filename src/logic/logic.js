@@ -324,15 +324,9 @@ export async function editListRequest(dispatch, listState, appData, handleClickO
     }
 }
 
-export async function deleteListRequest(dispatch, listState, appData, handleClickOnEditList) {
+export async function deleteListRequest(dispatch, id, appData) {
     dispatch(setLoader());
-    const newLists = appData.dataBase.lists.map(item => {
-        if(item.id === listState.id) {
-            return listState;
-        } else {
-            return item;
-        }
-    });
+    const newLists = appData.dataBase.lists.filter(filterItem => filterItem.id !== id);
 
     try {
         const response = await ky
@@ -350,7 +344,6 @@ export async function deleteListRequest(dispatch, listState, appData, handleClic
             .json();
         dispatch(setEditAppData(response));
         dispatch(setLoader());
-        handleClickOnEditList();
         window.location.replace('/lists');
     } catch (error) {
         dispatch(setLoader());

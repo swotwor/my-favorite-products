@@ -1,15 +1,15 @@
 import './App.css';
+import Lists from './pages/lists/Lists';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import Loader from './components/loader/Loader';
-import Lists from './pages/lists/Lists';
 import AllProduct from './pages/allProduct/AllProduct';
 import ProductAdd from './pages/productAdd/ProductAdd';
 import ProductCard from './pages/productCard/ProductCard';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { extractTokenAndUsername, checkUserInDataBase } from './logic/logic';
+import { extractTokenAndUsername, checkUserInDataBase, resetData } from './logic/logic';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -17,7 +17,8 @@ const App = () => {
 
     useEffect(() => {
         extractTokenAndUsername();
-        checkUserInDataBase(dispatch)
+        checkUserInDataBase(dispatch);
+        // resetData();
     }, []);
 
     return (

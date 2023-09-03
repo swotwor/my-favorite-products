@@ -1,15 +1,23 @@
 import style from './index.module.scss';
-import ViewCard from '../../../../components/productCard/ViewCard';
+import ViewMode from './components/viewMode/ViewMode';
+import EditMode from './components/editMode/EditMode';
+import { useState } from 'react';
 
 const ListItem = ({ listItem }) => {
-    const { title, productList } = listItem;
+    const [editMode, setEditMode] = useState(false);
+
+    const handleClickOnEditList = () => {
+        setEditMode(prev => !prev);
+    };
 
     return (
         <div className={style.listItemWrapper}>
-            <div className={style.listItemWrapper_inner}>
-                <p className={style.listItemWrapper_title}>{title}</p>
-                {/* <ViewCard productItem={productList}/> */}
-            </div>
+            {
+                editMode
+                ? <EditMode handleClickOnEditList={handleClickOnEditList} listItem={listItem}/>
+                : <ViewMode handleClickOnEditList={handleClickOnEditList} listItem={listItem}/>
+            }
+            
         </div>
     );
 };

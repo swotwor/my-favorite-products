@@ -1,21 +1,17 @@
 import style from './index.module.scss';
-import ViewCard from '../../../../components/productCard/ViewCard';
+import ViewCard from '../../../../../../components/productCard/ViewCard';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addListRequest, isProductSelected } from '../../../../logic/logic';
+import { addListRequest, editListRequest, isProductSelected } from '../../../../../../logic/logic';
 
-const AddList = ({ setAddtMode }) => {
-    const idList =  Date.now();
+const EditMode = ({ handleClickOnEditList, listItem }) => {
     const dispatch = useDispatch();
     const { appData } = useSelector(state => state.products);
     const { productItems } = appData.dataBase;
-    const [listState, setListState] = useState({
-        id: idList,
-        title: '',
-        productList: []
-    });
+    const { id, title, productList } = listItem;
+    const [listState, setListState] = useState({id, title, productList: [...productList]});
 
-    const handleChangeInput = (event) => {
+    const handleChangeInput = event => {
         setListState({
             ...listState,
             title: event.target.value,
@@ -42,22 +38,27 @@ const AddList = ({ setAddtMode }) => {
         }
     };
 
-    const handleClickOnSaveButton = () => {
-        addListRequest(dispatch, listState, appData, setAddtMode);
-    };
     const handleClickOnCancelButton = () => {
-        setAddtMode(false);
+        handleClickOnEditList();
     };
-    
+    const handleClickOnDeleteButton = () => {
+
+
+        handleClickOnEditList();
+    };
+    const handleClickOnSaveButton = () => {
+        editListRequest(dispatch, listState, appData, handleClickOnEditList);
+    };
+
     return (
-        <div className={style.addListWrapper}>
+        <div className={style.editModeWrapper}>
             <input type="text" placeholder='Назва списку' onChange={handleChangeInput} value={listState.title}/>
             {
                 productItems.map(item =>
                     <div
                         key={item.id}
-                        className={style.addListWrapper_card}
                         onClick={() => handleClickOnCard(item)}
+                        className={style.editModeWrapper_card}
                         style={{backgroundColor: isProductSelected(listState, item.id) ? 'rgba(0, 130, 0, 0.8)' : null}}
                     >
                         <ViewCard
@@ -66,20 +67,25 @@ const AddList = ({ setAddtMode }) => {
                     </div>
                 )
             }
-            <div className={style.addListWrapper_buttonBlock}>
+            <div className={style.editModeWrapper_buttonBlock}>
                 <button
-                    className={style.addListWrapper_cancelButton}
+                    className={style.editModeWrapper_cancelButton}
                     onClick={handleClickOnCancelButton}>
                         Відмінити
                 </button>
                 <button
-                    className={style.addListWrapper_saveButton}
+                    className={style.editModeWrapper_deleteButton}
+                    onClick={handleClickOnDeleteButton}>
+                        Видалити
+                </button>
+                <button
+                    className={style.editModeWrapper_saveButton}
                     onClick={handleClickOnSaveButton}>
-                        Додати
+                        Зберегти
                 </button>
             </div>
         </div>
     );
 };
 
-export default AddList;
+export default EditMode;

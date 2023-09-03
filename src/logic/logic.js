@@ -1,8 +1,23 @@
 import ky from 'ky';
-import { setAppData, setProductItem, deleteProduct, setLoader, setList } from '../store/store';
+import { userDataExemple } from '../helpers/example';
 import { REQUEST_ADDRESS_MOCAPI } from '../../state';
+import { setLoader, setEditAppData } from '../store/store';
 
 const access_token = document.cookie.split(';')[0].split('=')[1];
+
+export const resetData = async () => {
+    try {
+        const response = await ky
+            .put(`${REQUEST_ADDRESS_MOCAPI}1`, {
+                json: {
+                    ...userDataExemple},
+            })
+            .json();
+            console.log(response);
+    } catch (error) {
+        alert(error);
+    }
+}
 
 export async function addNewProduct(file = null, productInfo, dispatch, Resizer, userData) {
     dispatch(setLoader());
@@ -29,7 +44,7 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
                 },
             })
             .json();
-        dispatch(setProductItem(response));
+        dispatch(setEditAppData(response));
         dispatch(setLoader());
         window.location.replace('/');
     } catch (error) {
@@ -63,7 +78,7 @@ export async function editCurrentProduct(stateProduct, dispatch, userData, chang
             })
             .json();
         sessionStorage.setItem('productItem', JSON.stringify(...newProductList));
-        dispatch(setProductItem(response));
+        dispatch(setEditAppData(response));
         dispatch(setLoader());
         changeCardStatus();
     } catch (error) {
@@ -100,7 +115,7 @@ export async function deleteProductRequest(currentProductCard, appData, dispatch
     const deleteProductInfo = await deleteProductInfoRequest(appData, currentProductCard.id, dispatch);
 
     if (deleteFoto && deleteProductInfo.id) {
-        dispatch(deleteProduct(deleteProductInfo.dataBase.productItems));
+        dispatch(setEditAppData(deleteProductInfo));
         sessionStorage.removeItem('productItem');
         dispatch(setLoader());
         window.location.replace('/');
@@ -217,14 +232,14 @@ export async function checkUserInDataBase(dispatch) {
                     json: productExample,
                 })
                 .json();
-                dispatch(setAppData(response));
+                dispatch(setEditAppData(response));
         } catch (error) {
             alert(error)
         }
     } else if (isUserInDataBase.length === 1 && !!access_token) {
         // если есть пользователь в базе данных и есть токен авторизации - загружаем данные в приложение
         console.log('Пользователь есть в базе данных')
-        dispatch(setAppData(isUserInDataBase[0]));
+        dispatch(setEditAppData(isUserInDataBase[0]));
         localStorage.setItem('appData', JSON.stringify(isUserInDataBase));
     }
 
@@ -241,41 +256,7 @@ export function isProductSelected(listState, productCard) {
     return listState.productList?.some(item => item.id === productCard);
 }
 
-export async function addNewList(file = null, productInfo, dispatch, Resizer, userData) {
-    dispatch(setLoader());
-    const fileBeforCompression = await compressImage(file, Resizer);
-    const { link, deletehash } = await uploadImage(fileBeforCompression, dispatch);
-
-    try {
-        const response = await ky
-            .put(`${REQUEST_ADDRESS_MOCAPI}${userData.id}`, {
-                json: {
-                    ...userData,
-                    dataBase:{
-                        ...userData.dataBase,
-                        productItems: [
-                            ...userData.dataBase.productItems,
-                            {
-                                id: extractImageId(link),
-                                img: link,
-                                ...productInfo,
-                                deletehash,
-                            }
-                        ]
-                    }
-                },
-            })
-            .json();
-        dispatch(setProductItem(response));
-        dispatch(setLoader());
-        window.location.replace('/');
-    } catch (error) {
-        dispatch(setLoader());
-        alert(error);
-    }
-}
-
-export async function addListRequest (dispatch, listState, appData, setEditMode) {
+export async function addListRequest (dispatch, listState, appData, setAddtMode) {
     dispatch(setLoader());
     try {
         const response = await ky
@@ -292,9 +273,42 @@ export async function addListRequest (dispatch, listState, appData, setEditMode)
                 },
             })
             .json();
-        dispatch(setList(response));
+        dispatch(setEditAppData(response));
         dispatch(setLoader());
-        setEditMode();
+        setAddtMode();
+    } catch (error) {
+        dispatch(setLoader());
+        alert(error);
+    }
+}
+
+export async function editListRequest(dispatch, listState, appData, handleClickOnEditList) {
+    dispatch(setLoader());
+    const newLists = appData.dataBase.lists.map(item => {
+        if(item.id === listState.id) {
+            return listState;
+        } else {
+            return item;
+        }
+    });
+
+    try {
+        const response = await ky
+            .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
+                json: {
+                    ...appData,
+                    dataBase:{
+                        ...appData.dataBase,
+                        lists: [
+                            ...newLists,
+                        ]
+                    }
+                },
+            })
+            .json();
+        dispatch(setEditAppData(response));
+        dispatch(setLoader());
+        handleClickOnEditList();
     } catch (error) {
         dispatch(setLoader());
         alert(error);

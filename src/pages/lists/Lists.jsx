@@ -4,14 +4,13 @@ import ListItem from './components/listItem/ListItem';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
+
 const Lists = () => {
-    const [editMode, setEditMode] = useState(false);
+    const [addMode, setAddtMode] = useState(false);
     const lists = useSelector(state => state.products.appData.dataBase.lists);
 
-    console.log(lists);
-
     const handleClick = () => {
-        setEditMode(true);
+        setAddtMode(true);
     };
 
     return (
@@ -20,11 +19,11 @@ const Lists = () => {
                 Додати список
             </button>
             {
-                editMode
-                ? <AddList setEditMode={setEditMode}/>
+                addMode
+                ? <AddList setAddtMode={setAddtMode} lists={lists}/>
                 : <>
                     {
-                        lists.map(listItem => <ListItem listItem={listItem}/>)
+                        lists.map(listItem => <ListItem key={listItem.id} listItem={listItem}/>)
                     }
                 </>
             }

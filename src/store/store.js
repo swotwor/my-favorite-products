@@ -18,24 +18,11 @@ export const productSlice = createSlice({
     name: 'products', 
     initialState,
     reducers: {
-        setList: (state, action) => {
+        setEditAppData: (state, action) => {
             state.appData = action.payload;
         },
         setLoader: (state) => {
             state.loader = !state.loader;
-        },
-        setAppData: (state, action) => {
-            const responseUserApp = action.payload;
-            state.appData = {...responseUserApp};
-        },
-        deleteProduct: (state, action) => {
-            state.appData.dataBase.productItems = [...action.payload];
-        },
-        setProductItem: (state, action) => {
-            state.appData.dataBase.productItems = [
-                ...state.appData.dataBase.productItems,
-                ...action.payload.dataBase.productItems
-            ];
         },
         setCurrentProductCard: (state, action) => {
             state.currentProductCard = action.payload;
@@ -44,11 +31,8 @@ export const productSlice = createSlice({
 });
 
 export const {
-    setList,
     setLoader,
-    setAppData,
-    deleteProduct,
-    setProductItem,
+    setEditAppData,
     setCurrentProductCard,
 } = productSlice.actions;
 

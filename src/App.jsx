@@ -3,6 +3,7 @@ import Lists from './pages/lists/Lists';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import Loader from './components/loader/Loader';
+import Categories from './pages/categories/Categories';
 import AllProduct from './pages/allProduct/AllProduct';
 import ProductAdd from './pages/productAdd/ProductAdd';
 import ProductCard from './pages/productCard/ProductCard';
@@ -26,9 +27,10 @@ const App = () => {
             <Header />
             <Routes>
                 <Route path='/' element={<AllProduct />}/>
+                <Route path='/lists' element={<Lists />}/>
+                <Route path='/categories' element={<Categories />}/>
                 <Route path='/product_add' element={<ProductAdd />}/>
                 <Route path='/product_card' element={<ProductCard />}/>
-                <Route path='/lists' element={<Lists />}/>
             </Routes>
             {
                 loader

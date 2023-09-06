@@ -1,8 +1,8 @@
 import style from './index.module.scss';
-import ViewCard from '../../../../components/productCard/ViewCard';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addListRequest, isProductSelected } from '../../../../logic/logic';
+import AddListCard from '../../../../components/addListCard/AddListCard';
 
 const AddList = ({ setAddtMode }) => {
     const idList =  Date.now();
@@ -12,7 +12,7 @@ const AddList = ({ setAddtMode }) => {
     const [listState, setListState] = useState({
         id: idList,
         title: '',
-        productList: []
+        productList: [],
     });
 
     const handleChangeInput = (event) => {
@@ -60,9 +60,7 @@ const AddList = ({ setAddtMode }) => {
                         onClick={() => handleClickOnCard(item)}
                         style={{backgroundColor: isProductSelected(listState, item.id) ? 'rgba(0, 130, 0, 0.8)' : null}}
                     >
-                        <ViewCard
-                            productItem={item}
-                        />
+                        <AddListCard item={item}/>
                     </div>
                 )
             }

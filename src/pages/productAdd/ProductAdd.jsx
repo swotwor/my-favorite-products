@@ -11,7 +11,6 @@ const ProductAdd = () => {
     const [stateProduct, setStateProduct] = useState({
         cost: '',
         title: '',
-        amount: '',
         location: '',
         description: '',
     });

@@ -5,7 +5,7 @@ import { addListRequest, isProductSelected } from '../../../../logic/logic';
 import AddListCard from '../../../../components/addListCard/AddListCard';
 
 const AddList = ({ setAddtMode }) => {
-    const idList =  Date.now();
+    const idList = Date.now();
     const dispatch = useDispatch();
     const { appData } = useSelector(state => state.products);
     const { productItems } = appData.dataBase;
@@ -15,30 +15,52 @@ const AddList = ({ setAddtMode }) => {
         productList: [],
     });
 
-    const handleChangeInput = (event) => {
+    const handleChangeInput = event => {
         setListState({
             ...listState,
             title: event.target.value,
-        })
+        });
     };
-    const handleClickOnCard = (productItem) => {
-        const isProductExist =  listState.productList?.some(item => item.id === productItem.id);
+    const handleClickOnCard = (isClick, productItem) => {
+        const isProductExist = listState.productList?.some(
+            item => item.id === productItem.id
+        );
 
-        if (!isProductExist) {
-            setListState({ 
-                ...listState,
-                productList: [
-                    ...listState.productList,
-                    productItem,
-                ]
-            })
+        if (isClick) {
+            if (!isProductExist) {
+                setListState({
+                    ...listState,
+                    productList: [...listState.productList, productItem],
+                });
+            } else {
+                setListState({
+                    ...listState,
+                    productList: [
+                        ...listState.productList.filter(
+                            item => item.id !== productItem.id
+                        ),
+                    ],
+                });
+            }
         } else {
-            setListState({
-                ...listState,
-                productList: [
-                    ...listState.productList.filter(item => item.id !== productItem.id)
-                ]
-            })
+            if (!isProductExist) {
+                setListState({
+                    ...listState,
+                    productList: [...listState.productList, productItem],
+                });
+            } else {
+                setListState({
+                    ...listState,
+                    productList: listState.productList.map(item => {
+                    if (item.id === productItem.id) {
+                        return productItem
+                    } else {
+                        return item
+                    }
+                }),
+                });
+                
+            }            
         }
     };
 
@@ -48,32 +70,43 @@ const AddList = ({ setAddtMode }) => {
     const handleClickOnCancelButton = () => {
         setAddtMode(false);
     };
-    
+
     return (
         <div className={style.addListWrapper}>
-            <input type="text" placeholder='Назва списку' onChange={handleChangeInput} value={listState.title}/>
-            {
-                productItems.map(item =>
-                    <div
-                        key={item.id}
-                        className={style.addListWrapper_card}
-                        onClick={() => handleClickOnCard(item)}
-                        style={{backgroundColor: isProductSelected(listState, item.id) ? 'rgba(0, 130, 0, 0.8)' : null}}
-                    >
-                        <AddListCard item={item}/>
-                    </div>
-                )
-            }
+            <input
+                type="text"
+                placeholder="Назва списку"
+                onChange={handleChangeInput}
+                value={listState.title}
+            />
+            {productItems.map(item => (
+                <div
+                    key={item.id}
+                    style={{
+                        backgroundColor: isProductSelected(listState, item.id)
+                            ? 'rgba(0, 130, 0, 0.8)'
+                            : null,
+                    }}
+                    className={style.addListWrapper_card}
+                >
+                    <AddListCard
+                        item={item}
+                        handleClickOnCard={handleClickOnCard}
+                    />
+                </div>
+            ))}
             <div className={style.addListWrapper_buttonBlock}>
                 <button
                     className={style.addListWrapper_cancelButton}
-                    onClick={handleClickOnCancelButton}>
-                        Відмінити
+                    onClick={handleClickOnCancelButton}
+                >
+                    Відмінити
                 </button>
                 <button
                     className={style.addListWrapper_saveButton}
-                    onClick={handleClickOnSaveButton}>
-                        Додати
+                    onClick={handleClickOnSaveButton}
+                >
+                    Додати
                 </button>
             </div>
         </div>

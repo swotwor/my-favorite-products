@@ -42,5 +42,57 @@
 }
 
 
+.viewCard {
+    display: flex;
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.40);
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
 
+    &_productImg {
+        width: 170px;
+        margin-right: 5px;
+        border-radius: 5px;
+        height: fit-content;
+    }
+    &_contentBox {
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.40);
+        padding: 5px;
+        border-radius: 5px;
+    }
+    &_name {
+        display: flex;
+        justify-content: space-between;
+        font-size: 20px;
+        line-height: 20px;
+    }
+    &_title {
+        margin-right: 5px;
+        font-size: 26px;
+        line-height: normal;
+        font-weight: 600;
+    }
+    &_cost {
+    }
+    
+    &_productDescription {
+        font-size: 26px;
+        font-weight: 300;
+        line-height: 28px;
+        background-color: rgba(255, 255, 255, 0.40);
+        padding: 5px;
+        border-radius: 10px;
+        margin-bottom: 5px;
+    }
+    &_location {
+        font-size: 26px;
+        line-height: 28px;
+        background-color: rgba(255, 255, 255, 0.40);
+        padding: 5px;
+        border-radius: 10px;
+        margin-top: 30px;
+    }
+}
 

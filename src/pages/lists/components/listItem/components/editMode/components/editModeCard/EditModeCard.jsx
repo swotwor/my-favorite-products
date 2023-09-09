@@ -1,12 +1,13 @@
-import { isProductSelected } from '../../../../../../../../logic/logic';
 import style from './index.module.scss';
 import { useState } from "react";
+import { isProductSelected } from '../../../../../../../../logic/logic';
 
-const EditModeCard = ({ item, handleClickOnCard }) => {
-    const [amountState, setAmountState] = useState();
+const EditModeCard = ({ item, handleClickOnCard, listState }) => {
+    const [amountState, setAmountState] = useState(item.amount);
 
     const handleChangeAmount = event => {
-        handleClickOnCard(false, { ...item, amount: event.target.value });
+        setAmountState(event.target.value);
+        handleClickOnCard(false, { ...item, amount: amountState });
     };
 
     console.log(item);
@@ -37,7 +38,7 @@ const EditModeCard = ({ item, handleClickOnCard }) => {
                     </div>
                     <input
                         value={amountState}
-                        onClick={(event) => event.stopPropagation()}
+                        onClick={event => event.stopPropagation()}
                         onChange={handleChangeAmount}
                         className={style.addListCard_productDescription}
                         placeholder="Яка кількість"

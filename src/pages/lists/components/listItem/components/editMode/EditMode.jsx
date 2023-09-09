@@ -49,22 +49,29 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
         <div className={style.editModeWrapper}>
             <input type="text" placeholder='Назва списку' onChange={handleChangeInput} value={listState.title}/>
             {
-                productItems.map(item => <EditModeCard key={item.id} item={item} handleClickOnCard={handleClickOnCard}/>)
+                productItems.map(item =>
+                    <EditModeCard
+                        key={item.id}
+                        item={item}
+                        listState={listState}
+                        handleClickOnCard={handleClickOnCard}
+                    />
+                )
             }
             <div className={style.editModeWrapper_buttonBlock}>
                 <button
-                    className={style.editModeWrapper_cancelButton}
-                    onClick={handleClickOnCancelButton}>
+                    onClick={handleClickOnCancelButton}
+                    className={style.editModeWrapper_cancelButton}>
                         Відмінити
                 </button>
                 <button
-                    className={style.editModeWrapper_deleteButton}
-                    onClick={handleClickOnDeleteButton}>
+                    onClick={handleClickOnDeleteButton}
+                    className={style.editModeWrapper_deleteButton}>
                         Видалити
                 </button>
                 <button
-                    className={style.editModeWrapper_saveButton}
-                    onClick={handleClickOnSaveButton}>
+                    onClick={handleClickOnSaveButton}
+                    className={style.editModeWrapper_saveButton}>
                         Зберегти
                 </button>
             </div>

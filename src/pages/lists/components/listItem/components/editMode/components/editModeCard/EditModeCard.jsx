@@ -3,7 +3,7 @@ import { useState } from "react";
 import { isProductSelected } from '../../../../../../../../logic/logic';
 
 const EditModeCard = ({ item, handleClickOnCard, listState }) => {
-    const [amountState, setAmountState] = useState(item.amount);
+    const [amountState, setAmountState] = useState(item?.amount || '');
 
     const handleChangeAmount = event => {
         setAmountState(event.target.value);
@@ -26,7 +26,7 @@ const EditModeCard = ({ item, handleClickOnCard, listState }) => {
                 <img
                     className={style.viewCard_productImg}
                     src={item.img}
-                    alt="viewCard_productImg"
+                    alt="product img"
                 />
                 <div className={style.viewCard_contentBox}>
                     <div className={style.viewCard_name}>

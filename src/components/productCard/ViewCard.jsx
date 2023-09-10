@@ -9,16 +9,30 @@ const ViewCard = ({ productItem }) => {
             <div className={style.viewCard_contentBox}>
                 <div className={style.viewCard_name}>
                     <div className={style.viewCard_nameLeftBlock}>
-                        <p className={style.viewCard_title}>{title} - {cost} грн</p>
+                        <p className={style.viewCard_title}>
+                            {title}
+                            {
+                                cost
+                                    ? ` - ${cost} грн`
+                                    : null
+                            }
+                        </p>
                     </div>
                 </div>
                 {
                     amount
-                        ? <p className={style.viewCard_productDescription}>{amount}</p>
-                        : <p className={style.viewCard_productDescription}>{description}</p>
+                        ? amount
+                            ? <p className={style.viewCard_productDescription}>{amount}</p>
+                            : null
+                        : description
+                            ? <p className={style.viewCard_productDescription}>{description}</p>
+                            : null
                 }
-                
-                <p className={style.viewCard_location}>{location}</p>
+                {
+                    location
+                        ? <p className={style.viewCard_location}>{location}</p>
+                        : null
+                }
             </div>
         </div>
     );

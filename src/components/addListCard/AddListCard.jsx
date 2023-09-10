@@ -1,9 +1,11 @@
 import style from './index.module.scss';
+import { useState } from 'react';
 
 const AddListCard = ({ item, handleClickOnCard }) => {
-
+    const [amountState, setAmountState] = useState(item.amount)
     const handleChangeAmount = event => {
-        handleClickOnCard(false, { ...item, amount: event.target.value });
+        setAmountState(event.target.value);
+        handleClickOnCard(false, { ...item, amount: amountState });
     };
 
     return (
@@ -13,7 +15,7 @@ const AddListCard = ({ item, handleClickOnCard }) => {
         >
             <img
                 src={item.img}
-                alt="addListCard_productImg"
+                alt="product img"
                 className={style.addListCard_productImg}
             />
             <div className={style.addListCard_contentBox}>
@@ -25,13 +27,12 @@ const AddListCard = ({ item, handleClickOnCard }) => {
                     </div>
                 </div>
                 <input
+                    value={amountState}
                     onClick={event => event.stopPropagation()}
                     onChange={handleChangeAmount}
                     className={style.addListCard_productDescription}
                     placeholder="Яка кількість"
-                >
-                    {item.amount}
-                </input>
+                />
                 <p className={style.addListCard_location}>{item.location}</p>
             </div>
         </div>

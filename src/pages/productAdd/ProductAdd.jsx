@@ -11,6 +11,7 @@ const ProductAdd = () => {
     const [stateProduct, setStateProduct] = useState({
         cost: '',
         title: '',
+        amount: '',
         location: '',
         description: '',
     });
@@ -24,10 +25,8 @@ const ProductAdd = () => {
         setStateProduct({ ...stateProduct, [field]: event.target.value });
     };
 
-    const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
-
     const handleClickOnButton = () => {
-        if (allValuesFilled && file) {
+        if (stateProduct.title && file) {
             addNewProduct(file, stateProduct, dispatch, Resizer, userData);
         } else {
             alert('Не всі поля заповнені');

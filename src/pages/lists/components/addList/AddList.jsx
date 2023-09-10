@@ -75,9 +75,9 @@ const AddList = ({ setAddtMode }) => {
         <div className={style.addListWrapper}>
             <input
                 type="text"
-                placeholder="Назва списку"
-                onChange={handleChangeInput}
                 value={listState.title}
+                onChange={handleChangeInput}
+                placeholder="Назва списку"
             />
             {productItems.map(item => (
                 <div
@@ -97,14 +97,14 @@ const AddList = ({ setAddtMode }) => {
             ))}
             <div className={style.addListWrapper_buttonBlock}>
                 <button
-                    className={style.addListWrapper_cancelButton}
                     onClick={handleClickOnCancelButton}
+                    className={style.addListWrapper_cancelButton}
                 >
                     Відмінити
                 </button>
                 <button
-                    className={style.addListWrapper_saveButton}
                     onClick={handleClickOnSaveButton}
+                    className={style.addListWrapper_saveButton}
                 >
                     Додати
                 </button>

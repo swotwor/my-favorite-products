@@ -15,6 +15,7 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
         setListState({...listState, title: event.target.value})
     };
     const handleClickOnCard = productItem => {
+        console.log(productItem);
         const isProductExist =  listState.productList?.some(item => item.id === productItem.id);
 
         if (!isProductExist) {
@@ -42,6 +43,7 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
         deleteListRequest(dispatch, id, appData);
     };
     const handleClickOnSaveButton = () => {
+        console.log(listState);
         editListRequest(dispatch, listState, appData, handleClickOnEditList);
     };
 
@@ -49,7 +51,7 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
         <div className={style.editModeWrapper}>
             <input type="text" placeholder='Назва списку' onChange={handleChangeInput} value={listState.title}/>
             {
-                productItems.map(item =>
+                productList.map(item =>
                     <EditModeCard
                         key={item.id}
                         item={item}

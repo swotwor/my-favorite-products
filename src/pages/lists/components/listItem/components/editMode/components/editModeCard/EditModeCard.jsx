@@ -7,10 +7,8 @@ const EditModeCard = ({ item, handleClickOnCard, listState }) => {
 
     const handleChangeAmount = event => {
         setAmountState(event.target.value);
-        handleClickOnCard(false, { ...item, amount: amountState });
+        handleClickOnCard({ ...item, amount: amountState });
     };
-
-    console.log(item);
 
     return (
         <div
@@ -42,9 +40,7 @@ const EditModeCard = ({ item, handleClickOnCard, listState }) => {
                         onChange={handleChangeAmount}
                         className={style.addListCard_productDescription}
                         placeholder="Яка кількість"
-                    >
-                        {item.amount}
-                    </input>
+                    />
                     <p className={style.viewCard_location}>{item.location}</p>
                 </div>
             </div>

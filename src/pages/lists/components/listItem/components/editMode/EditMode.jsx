@@ -15,8 +15,18 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
         setListState({...listState, title: event.target.value})
     };
     const handleClickOnCard = productItem => {
-        console.log(productItem);
         const isProductExist =  listState.productList?.some(item => item.id === productItem.id);
+        const combineProduct = () => {
+            return [
+                ...productList,
+                productItems.filter((item1) => !productList.some((item2) => item1.id === item2.id))
+            ]
+        };
+
+        // console.log(combineProduct());
+        // console.log(productItems.filter((item1) => productList.some((item2) => item1.id !== item2.id)));
+        console.log(productList.some(item2 => item2.id === "SHDhfJ"));
+        console.log(productList);
 
         if (!isProductExist) {
             setListState({ 

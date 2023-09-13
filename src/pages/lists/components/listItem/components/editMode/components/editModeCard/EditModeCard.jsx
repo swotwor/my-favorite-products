@@ -7,14 +7,15 @@ const EditModeCard = ({ item, handleClickOnCard, listState }) => {
 
     const handleChangeAmount = event => {
         setAmountState(event.target.value);
-        handleClickOnCard({ ...item, amount: amountState });
+        handleClickOnCard(true, { ...item, amount: amountState });
     };
 
     return (
         <div
-            onClick={() => handleClickOnCard(item)}
+            onClick={() => handleClickOnCard(false, item)}
             className={style.editModeWrapper_card}
             style={{
+                borderRadius: '10px',
                 backgroundColor: isProductSelected(listState, item.id)
                     ? 'rgba(0, 130, 0, 0.8)'
                     : null,

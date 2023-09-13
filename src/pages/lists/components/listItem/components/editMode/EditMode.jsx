@@ -1,49 +1,68 @@
 import style from './index.module.scss';
 import { useState } from 'react';
+import EditModeCard from './components/editModeCard/EditModeCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteListRequest, editListRequest, isProductSelected } from '../../../../../../logic/logic';
-import EditModeCard from './components/editModeCard/EditModeCard';
 
 const EditMode = ({ handleClickOnEditList, listItem }) => {
     const dispatch = useDispatch();
     const { appData } = useSelector(state => state.products);
     const { productItems } = appData.dataBase;
     const { id, title, productList } = listItem;
-    const [listState, setListState] = useState({id, title, productList: [...productList]});
+    const [temporaryListState, setTemporaryListState] = useState({id, title, productList: [...productList]});
 
-    const handleChangeInput = event => {
-        setListState({...listState, title: event.target.value})
-    };
-    const handleClickOnCard = productItem => {
-        const isProductExist =  listState.productList?.some(item => item.id === productItem.id);
-        const combineProduct = () => {
-            return [
-                ...productList,
-                productItems.filter((item1) => !productList.some((item2) => item1.id === item2.id))
-            ]
-        };
-
-        // console.log(combineProduct());
-        // console.log(productItems.filter((item1) => productList.some((item2) => item1.id !== item2.id)));
-        console.log(productList.some(item2 => item2.id === "SHDhfJ"));
+    const combineProducts = () => {
+        const newArray = [...temporaryListState.productList];
         console.log(productList);
 
-        if (!isProductExist) {
-            setListState({ 
-                ...listState,
+        productItems.map(item1 => {
+            temporaryListState.productList.map(item2 => {
+                if (item1.id !== item2.id) {
+                    newArray.push(item1)
+                }
+            })
+        })
+
+        console.log(newArray);
+        return newArray;
+    }
+
+    const handleChangeInput = event => {
+        setTemporaryListState({...temporaryListState, title: event.target.value})
+    };
+    
+    const handleClickOnCard = (isInputChange, productItem) => {
+        const isProductExist =  temporaryListState.productList?.some(item => item.id === productItem.id);
+
+        if (isInputChange) {
+            setTemporaryListState({
+                ...temporaryListState,
                 productList: [
-                    ...listState.productList,
+                    ...temporaryListState.productList,
                     productItem,
                 ]
             })
         } else {
-            setListState({
-                ...listState,
-                productList: [
-                    ...listState.productList.filter(item => item.id !== productItem.id)
-                ]
-            })
+            if (!isProductExist) {
+                console.log('продукта нет есть в списке - добавляем');
+                setTemporaryListState({ 
+                    ...temporaryListState,
+                    productList: [
+                        ...temporaryListState.productList,
+                        productItem,
+                    ]
+                })
+            } else {
+                console.log('продукт есть в списке - убираем');
+                setTemporaryListState({
+                    ...temporaryListState,
+                    productList: [
+                        ...temporaryListState.productList.filter(item => item.id !== productItem.id)
+                    ]
+                })
+            }
         }
+        
     };
 
     const handleClickOnCancelButton = () => {
@@ -53,19 +72,18 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
         deleteListRequest(dispatch, id, appData);
     };
     const handleClickOnSaveButton = () => {
-        console.log(listState);
-        editListRequest(dispatch, listState, appData, handleClickOnEditList);
+        editListRequest(dispatch, temporaryListState, appData, handleClickOnEditList);
     };
 
     return (
         <div className={style.editModeWrapper}>
-            <input type="text" placeholder='Назва списку' onChange={handleChangeInput} value={listState.title}/>
+            <input type="text" placeholder='Назва списку' onChange={handleChangeInput} value={temporaryListState.title}/>
             {
-                productList.map(item =>
+                combineProducts().map(item =>
                     <EditModeCard
                         key={item.id}
                         item={item}
-                        listState={listState}
+                        listState={temporaryListState}
                         handleClickOnCard={handleClickOnCard}
                     />
                 )

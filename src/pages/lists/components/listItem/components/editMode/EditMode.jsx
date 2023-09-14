@@ -1,5 +1,5 @@
 import style from './index.module.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditModeCard from './components/editModeCard/EditModeCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteListRequest, editListRequest, isProductSelected } from '../../../../../../logic/logic';
@@ -7,14 +7,24 @@ import { deleteListRequest, editListRequest, isProductSelected } from '../../../
 const EditMode = ({ handleClickOnEditList, listItem }) => {
     const dispatch = useDispatch();
     const { appData } = useSelector(state => state.products);
-    const { productItems } = appData.dataBase;
-    const { id, title, productList } = listItem;
-    const [temporaryListState, setTemporaryListState] = useState({id, title, productList: [...productList]});
+    const productItems = appData.dataBase.productItems;
+    const [temporaryListState, setTemporaryListState] = useState({...listItem});
+    const newArray = [...temporaryListState.productList];
+    
+    // const combineProducts = () => {
 
-    const combineProducts = () => {
-        const newArray = [...temporaryListState.productList];
-        console.log(productList);
+    //     productItems.map(item1 => {
+    //         temporaryListState.productList.map(item2 => {
+    //             if (item1.id !== item2.id) {
+    //                 newArray.push(item1)
+    //             }
+    //         })
+    //     })
 
+    //     return newArray;
+    // }
+
+    useEffect(() => {
         productItems.map(item1 => {
             temporaryListState.productList.map(item2 => {
                 if (item1.id !== item2.id) {
@@ -22,10 +32,8 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
                 }
             })
         })
-
         console.log(newArray);
-        return newArray;
-    }
+    }, [temporaryListState])
 
     const handleChangeInput = event => {
         setTemporaryListState({...temporaryListState, title: event.target.value})
@@ -33,18 +41,27 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
     
     const handleClickOnCard = (isInputChange, productItem) => {
         const isProductExist =  temporaryListState.productList?.some(item => item.id === productItem.id);
+        const editAmountProduct = temporaryListState.productList.map(item => {
+            if (item.id === productItem.id) {
+                return {...item, amount: productItem.amount}
+            } else {
+                return item
+            }
+        });
+
+
 
         if (isInputChange) {
             setTemporaryListState({
                 ...temporaryListState,
                 productList: [
-                    ...temporaryListState.productList,
-                    productItem,
+                    ...editAmountProduct
                 ]
             })
         } else {
             if (!isProductExist) {
                 console.log('продукта нет есть в списке - добавляем');
+                console.log(productItem);
                 setTemporaryListState({ 
                     ...temporaryListState,
                     productList: [
@@ -52,6 +69,7 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
                         productItem,
                     ]
                 })
+                console.log(temporaryListState);
             } else {
                 console.log('продукт есть в списке - убираем');
                 setTemporaryListState({
@@ -69,7 +87,7 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
         handleClickOnEditList();
     };
     const handleClickOnDeleteButton = () => {
-        deleteListRequest(dispatch, id, appData);
+        deleteListRequest(dispatch, temporaryListState.id, appData);
     };
     const handleClickOnSaveButton = () => {
         editListRequest(dispatch, temporaryListState, appData, handleClickOnEditList);
@@ -79,7 +97,7 @@ const EditMode = ({ handleClickOnEditList, listItem }) => {
         <div className={style.editModeWrapper}>
             <input type="text" placeholder='Назва списку' onChange={handleChangeInput} value={temporaryListState.title}/>
             {
-                combineProducts().map(item =>
+                newArray.map(item =>
                     <EditModeCard
                         key={item.id}
                         item={item}

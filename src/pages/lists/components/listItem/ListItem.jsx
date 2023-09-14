@@ -10,8 +10,6 @@ const ListItem = ({ listItem }) => {
         setEditMode(prev => !prev);
     };
 
-    console.log(listItem);
-
     return (
         <div className={style.listItemWrapper}>
             {

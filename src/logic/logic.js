@@ -350,3 +350,17 @@ export async function deleteListRequest(dispatch, id, appData) {
         alert(error);
     }
 }
+
+export function editProductList(isInputChange, dispatch, productItem, lists, listItem) {
+    // isInputChange - указывает, редактированется ли amount + идет добавление в список покупок
+    // dispatch - изменение нашего стейта
+    // productItem - продукт который добавляется/изменяется/удаляется
+    // lists - список покупок {id, title, productList: [...productList]}
+    const isProductExist =  listItem.productList?.some(item => item.id === productItem.id);
+
+    if (isInputChange) {
+        
+    } else {
+
+    }
+}

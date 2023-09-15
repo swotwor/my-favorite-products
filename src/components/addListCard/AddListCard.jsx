@@ -2,7 +2,8 @@ import style from './index.module.scss';
 import { useState } from 'react';
 
 const AddListCard = ({ item, handleClickOnCard }) => {
-    const [amountState, setAmountState] = useState(item.amount)
+    const [amountState, setAmountState] = useState(item.amount);
+
     const handleChangeAmount = event => {
         setAmountState(event.target.value);
         handleClickOnCard(false, { ...item, amount: amountState });

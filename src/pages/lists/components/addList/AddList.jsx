@@ -83,6 +83,7 @@ const AddList = ({ setAddtMode }) => {
                 <div
                     key={item.id}
                     style={{
+                        borderRadius: '10px',
                         backgroundColor: isProductSelected(listState, item.id)
                             ? 'rgba(0, 130, 0, 0.8)'
                             : null,

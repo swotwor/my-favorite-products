@@ -12,6 +12,7 @@ const ProductAdd = () => {
         cost: '',
         title: '',
         amount: '',
+        bought: '',
         location: '',
         description: '',
     });

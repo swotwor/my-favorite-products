@@ -27,7 +27,7 @@ const ProductAdd = () => {
     };
 
     const handleClickOnButton = () => {
-        if (stateProduct.title && file) {
+        if (stateProduct.title && file && stateProduct.location) {
             addNewProduct(file, stateProduct, dispatch, Resizer, userData);
         } else {
             alert('Не всі поля заповнені');
@@ -37,7 +37,7 @@ const ProductAdd = () => {
     return (
         <div className={style.wrapper}>
             <ProductAddHeader />
-            <p>Назва</p>
+            <p>Назва*</p>
             <input
                 type="text"
                 maxLength={30}
@@ -50,19 +50,19 @@ const ProductAdd = () => {
                 value={stateProduct.cost}
                 onChange={(event) => handleInputChange(event, 'cost')}
             />
-            <p>Де купували</p>
-            <input
-                type="text"
-                value={stateProduct.location}
-                onChange={(event) => handleInputChange(event, 'location')}
-            />
             <p>Опис товару</p>
             <input
                 type="text"
                 value={stateProduct.description}
                 onChange={(event) => handleInputChange(event, 'description')}
             />
-            <p>Прікрипити фотографію</p>
+            <p>Де купували*</p>
+            <input
+                type="text"
+                value={stateProduct.location}
+                onChange={(event) => handleInputChange(event, 'location')}
+            />
+            <p>Прікрипити фотографію*</p>
             <input
                 type="file"
                 onChange={handleFileChange}

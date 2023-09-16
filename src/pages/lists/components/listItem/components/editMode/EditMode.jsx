@@ -1,8 +1,8 @@
 import style from './index.module.scss';
+import AddListCard from '../../../../../../components/addListCard/AddListCard';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteListRequest, editListRequest, isProductSelected } from '../../../../../../logic/logic';
-import AddListCard from '../../../../../../components/addListCard/AddListCard';
 
 const EditMode = ({ handleClickOnEditList, listItem }) => {
     const dispatch = useDispatch();

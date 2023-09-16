@@ -14,12 +14,19 @@ const ViewCard = ({ changeCardStatus }) => {
             <div className={style.viewCard_header}>
                 <div className={style.viewCard_name}>
                     <p className={style.viewCard_title}>{title}</p>
-                    <p className={style.viewCard_cost}> - {cost}грн</p>
+                    {
+                        cost
+                            ? <p className={style.viewCard_cost}> - {cost}грн</p>
+                            : null
+                    }
+                    
                 </div>
             </div>
-            <div className={style.viewCard_productDescription}>
-                {description}
-            </div>
+            {
+                description
+                    ? <div className={style.viewCard_productDescription}>{description}</div>
+                    : null
+            }
             <div className={style.viewCard_location}>
                 {location}
             </div>

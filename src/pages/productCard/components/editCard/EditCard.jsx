@@ -22,8 +22,6 @@ const EditCard = ({ changeCardStatus }) => {
         setStateProduct({ ...stateProduct, [field]: event.target.value });
     };
 
-    const allValuesFilled = Object.values(stateProduct).every(value => value !== '');
-
     const handleClickOnDelete = (event) => {
         event.preventDefault();
         deleteProductRequest(currentProductCard, appData, dispatch);
@@ -36,7 +34,7 @@ const EditCard = ({ changeCardStatus }) => {
     
     const handleClickOnSave = (event) => {
         event.preventDefault();
-        if (allValuesFilled) {
+        if (stateProduct.title && stateProduct.location) {
             if (
                 title !== stateProduct.title
                 || cost !== stateProduct.cost
@@ -46,9 +44,7 @@ const EditCard = ({ changeCardStatus }) => {
                 editCurrentProduct(stateProduct, dispatch, appData, changeCardStatus);
                 dispatch(setCurrentProductCard(stateProduct));
                 sessionStorage.setItem('productItem', JSON.stringify(stateProduct));
-                console.log('Значения изменены');
             } else {
-                console.log('Значения не изменены');
                 changeCardStatus(prev => !prev);
             }
         } else {

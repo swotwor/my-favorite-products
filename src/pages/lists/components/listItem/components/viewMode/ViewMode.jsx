@@ -18,7 +18,7 @@ const ViewMode = ({ listItem, handleClickOnEditList }) => {
                     onClick={handleClickOnOpenList}
                     className={style.viewModeWrapper_title}
                 >
-                    {title}
+                    {title + ' (' + productList.length + ')'}
                 </p>
                 <img
                     src={editIcon}

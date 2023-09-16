@@ -30,7 +30,7 @@ const ProductAdd = () => {
         if (stateProduct.title && file && stateProduct.location) {
             addNewProduct(file, stateProduct, dispatch, Resizer, userData);
         } else {
-            alert('Не всі поля заповнені');
+            alert('Заповніть поля, які позначені *');
         }
     };
 

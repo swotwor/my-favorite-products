@@ -48,7 +48,7 @@ const EditCard = ({ changeCardStatus }) => {
                 changeCardStatus(prev => !prev);
             }
         } else {
-            alert('Не всі поля заповнені');
+            alert('Заповніть поля, які позначені *');
         }
     };
 
@@ -72,19 +72,19 @@ const EditCard = ({ changeCardStatus }) => {
                     value={stateProduct.cost}
                     onChange={(event) => handleInputChange(event, 'cost')}
                 />
-                <label htmlFor='location'>Де купували</label>
-                <input
-                    name='locatin'
-                    type="text"
-                    value={stateProduct.location}
-                    onChange={(event) => handleInputChange(event, 'location')}
-                />
                 <label htmlFor='description'>Опис товару</label>
                 <input
                     name='description'
                     type="text"
                     value={stateProduct.description}
                     onChange={(event) => handleInputChange(event, 'description')}
+                />
+                <label htmlFor='location'>Де купували</label>
+                <input
+                    name='locatin'
+                    type="text"
+                    value={stateProduct.location}
+                    onChange={(event) => handleInputChange(event, 'location')}
                 />
                 <div className={style.buttonGroup}>
                     <button className={style.buttonGroup_cancle} onClick={handleClickOnCancel}>Відмінити</button>

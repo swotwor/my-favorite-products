@@ -7,8 +7,8 @@ const ViewCard = ({ productItem }) => {
         <div className={style.viewCard}>
             <img className={style.viewCard_productImg} src={img} alt="viewCard_productImg" />
             <div className={style.viewCard_contentBox}>
-                <div className={style.viewCard_name}>
-                    <div className={style.viewCard_nameLeftBlock}>
+                <div className={style.viewCard_mainContentBox}>
+                    <div className={style.viewCard_name}>
                         <p className={style.viewCard_title}>
                             {title}
                             {
@@ -18,16 +18,16 @@ const ViewCard = ({ productItem }) => {
                             }
                         </p>
                     </div>
+                    {
+                        amount
+                            ? amount
+                                ? <p className={style.viewCard_productDescription}>{amount}</p>
+                                : null
+                            : description
+                                ? <p className={style.viewCard_productDescription}>{description}</p>
+                                : null
+                    }
                 </div>
-                {
-                    amount
-                        ? amount
-                            ? <p className={style.viewCard_productDescription}>{amount}</p>
-                            : null
-                        : description
-                            ? <p className={style.viewCard_productDescription}>{description}</p>
-                            : null
-                }
                 {
                     location
                         ? <p className={style.viewCard_location}>{location}</p>

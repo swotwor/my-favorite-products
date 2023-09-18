@@ -23,7 +23,7 @@ const Lists = () => {
                 ? <AddList setAddtMode={setAddtMode} lists={lists}/>
                 : <>
                     {
-                        lists.map(listItem => <ListItem key={listItem.id} listItem={listItem}/>)
+                        [...lists].reverse().map(listItem => <ListItem key={listItem.id} listItem={listItem}/>)
                     }
                 </>
             }

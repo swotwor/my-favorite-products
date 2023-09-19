@@ -1,9 +1,9 @@
 import style from './index.module.scss';
 import ViewCard from '../../components/productCard/ViewCard';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setCurrentProductCard } from '../../store/store';
 import { useEffect } from 'react';
+import { setCurrentProductCard } from '../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
 
 const AllProduct = () => {
     const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const AllProduct = () => {
 
     useEffect(() => {
         sessionStorage.removeItem('productItem');
-    }, [])
+    }, []);
     
     return (
         <div className={style.allProduct}>

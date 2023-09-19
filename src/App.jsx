@@ -10,7 +10,7 @@ import ProductCard from './pages/productCard/ProductCard';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { extractTokenAndUsername, checkUserInDataBase, resetData } from './logic/logic';
+import { extractTokenAndUsername, checkUserInDataBase } from './logic/logic';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -19,7 +19,6 @@ const App = () => {
     useEffect(() => {
         extractTokenAndUsername();
         checkUserInDataBase(dispatch);
-        // resetData();
     }, []);
 
     return (

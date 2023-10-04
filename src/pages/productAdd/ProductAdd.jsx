@@ -1,7 +1,6 @@
 import style from './index.module.scss';
 import Resizer from 'react-image-file-resizer';
 import { useState } from 'react';
-import ProductAddHeader from './components/productAddHeader/ProductAddHeader';
 import { addNewProduct } from '../../logic/logic';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -36,7 +35,9 @@ const ProductAdd = () => {
 
     return (
         <div className={style.wrapper}>
-            <ProductAddHeader />
+            <div className={style.productCardHeader}>
+                Додати
+            </div>
             <p>Назва*</p>
             <input
                 type="text"

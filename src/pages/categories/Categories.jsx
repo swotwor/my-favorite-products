@@ -5,8 +5,8 @@ import AddCategory from './components/addCategory/AddCategory';
 
 const Categories = () => {
     const [addMode, setAddtMode] = useState(false);
-    // const {productItems, categories} = useSelector(state => state.products.appData.dataBase);
-    // console.log(productItems, categories);
+    const {productItems, categories} = useSelector(state => state.products.appData.dataBase);
+    console.log(productItems, categories);
     const handleClickOnButton = () => {
         setAddtMode(true);
     }

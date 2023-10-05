@@ -350,3 +350,29 @@ export async function deleteListRequest(dispatch, id, appData) {
         alert(error);
     }
 }
+
+export async function addCategoryRequest (dispatch, appData, categoryName, setAddtMode) {
+    dispatch(setLoader());
+    try {
+        const response = await ky
+            .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
+                json: {
+                    ...appData,
+                    dataBase:{
+                        ...appData.dataBase,
+                        categories: [
+                            ...appData.dataBase.categories,
+                            categoryName,
+                        ]
+                    }
+                },
+            })
+            .json();
+        dispatch(setEditAppData(response));
+        dispatch(setLoader());
+        setAddtMode();
+    } catch (error) {
+        dispatch(setLoader());
+        console.log(error);
+    }
+}

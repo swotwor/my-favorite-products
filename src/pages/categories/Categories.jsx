@@ -1,12 +1,10 @@
 import style from './index.module.scss';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import Category from './components/categoryItem/components/category/Category';
 import AddCategory from './components/addCategory/AddCategory';
+import { useState } from 'react';
 
 const Categories = () => {
     const [addMode, setAddtMode] = useState(false);
-    const {productItems, categories} = useSelector(state => state.products.appData.dataBase);
-    console.log(productItems, categories);
     const handleClickOnButton = () => {
         setAddtMode(true);
     }
@@ -21,7 +19,7 @@ const Categories = () => {
             {
                 addMode
                     ? <AddCategory setAddtMode={setAddtMode}/>
-                    : null
+                    : <Category />
             }
         </div>
     );

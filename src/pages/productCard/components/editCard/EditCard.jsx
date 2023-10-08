@@ -86,6 +86,8 @@ const EditCard = ({ changeCardStatus }) => {
                     value={stateProduct.location}
                     onChange={(event) => handleInputChange(event, 'location')}
                 />
+                {/* <label htmlFor='location'>Оберіть категорію *</label> */}
+
                 <div className={style.buttonGroup}>
                     <button className={style.buttonGroup_cancle} onClick={handleClickOnCancel}>Відмінити</button>
                     <button className={style.buttonGroup_delete} onClick={handleClickOnDelete}>Видалити</button>

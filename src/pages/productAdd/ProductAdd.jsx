@@ -57,6 +57,19 @@ const ProductAdd = () => {
                 value={stateProduct.description}
                 onChange={(event) => handleInputChange(event, 'description')}
             />
+            <p htmlFor='location'>Оберіть категорію *</p>
+            <select className={style.select} onChange={(event) => handleInputChange(event, 'category')}>
+                {
+                    userData.dataBase.categories.map((category) => 
+                        <option
+                            key={category}
+                            value={category}
+                        >
+                            {category}
+                        </option>
+                    )
+                }
+            </select>
             <p>Де купували*</p>
             <input
                 type="text"

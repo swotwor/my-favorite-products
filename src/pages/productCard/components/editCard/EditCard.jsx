@@ -6,14 +6,16 @@ import { deleteProductRequest, editCurrentProduct } from '../../../../logic/logi
 
 const EditCard = ({ changeCardStatus }) => {
     const dispatch = useDispatch();
+    const categories = useSelector(state => state.products.appData.dataBase.categories);
     const { currentProductCard, appData } = useSelector(state => state.products);
-    const {id, img, cost, title, location, deleteHash, description} = currentProductCard;
+    const {id, img, cost, title, location, deleteHash, description, category} = currentProductCard;
     const [stateProduct, setStateProduct] = useState({
         id: id,
         img: img,
         cost: cost,
         title: title,
         location: location,
+        category: category,
         deleteHash: deleteHash,
         description: description,
     });
@@ -39,6 +41,7 @@ const EditCard = ({ changeCardStatus }) => {
                 title !== stateProduct.title
                 || cost !== stateProduct.cost
                 || location !== stateProduct.location
+                || category !== stateProduct.category
                 || description !== stateProduct.description
             ) {
                 editCurrentProduct(stateProduct, dispatch, appData, changeCardStatus);
@@ -58,7 +61,7 @@ const EditCard = ({ changeCardStatus }) => {
                 <img src={stateProduct.img} alt="product_img" />
             </div>
             <form>
-                <label htmlFor='title'>Назва</label>
+                <label htmlFor='title'>Назва *</label>
                 <input
                     type="text"
                     name='title'
@@ -79,22 +82,36 @@ const EditCard = ({ changeCardStatus }) => {
                     value={stateProduct.description}
                     onChange={(event) => handleInputChange(event, 'description')}
                 />
-                <label htmlFor='location'>Де купували</label>
+                <label htmlFor='location'>Де купували *</label>
                 <input
                     name='locatin'
                     type="text"
                     value={stateProduct.location}
                     onChange={(event) => handleInputChange(event, 'location')}
                 />
-                {/* <label htmlFor='location'>Оберіть категорію *</label> */}
-
+                <label htmlFor='location'>Оберіть категорію *</label>
+                <select
+                    value={stateProduct.category}
+                    className={style.wrapper_select}
+                    onChange={(event) => handleInputChange(event, 'category')}
+                >
+                {
+                    categories.map((category) => 
+                        <option
+                            key={category}
+                            value={category}
+                        >
+                            {category}
+                        </option>
+                    )
+                }
+                </select>
                 <div className={style.buttonGroup}>
                     <button className={style.buttonGroup_cancle} onClick={handleClickOnCancel}>Відмінити</button>
                     <button className={style.buttonGroup_delete} onClick={handleClickOnDelete}>Видалити</button>
                     <button className={style.buttonGroup_save} onClick={handleClickOnSave}>Зберегти</button>
                 </div>
             </form>
-            
         </div>
     );
 };

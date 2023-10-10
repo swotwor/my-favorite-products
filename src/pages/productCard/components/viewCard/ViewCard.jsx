@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 const ViewCard = ({ changeCardStatus }) => {
     const { currentProductCard } = useSelector(state => state.products);
-    const { title, img, cost, description, location } = currentProductCard;
+    const { title, img, cost, description, location, category } = currentProductCard;
 
     return (
         <div className={style.viewCard}>
@@ -11,6 +11,7 @@ const ViewCard = ({ changeCardStatus }) => {
                 <img src={img} alt="product_img" />
                 <div onClick={changeCardStatus} className={style.viewCard_buttonChangeStatusCard}/>
             </div>
+            <p className={style.viewCard_text}>Назва товару</p>
             <div className={style.viewCard_header}>
                 <div className={style.viewCard_name}>
                     <p className={style.viewCard_title}>{title}</p>
@@ -19,14 +20,22 @@ const ViewCard = ({ changeCardStatus }) => {
                             ? <p className={style.viewCard_cost}> - {cost}грн</p>
                             : null
                     }
-                    
                 </div>
             </div>
             {
                 description
-                    ? <div className={style.viewCard_productDescription}>{description}</div>
+                    ? <>
+                        <p className={style.viewCard_text}>Опис товару</p>
+                        <div className={style.viewCard_productDescription}>{description}</div>
+                      </>
+                    
                     : null
             }
+            <p className={style.viewCard_text}>Категорія товару</p>
+            <div className={style.viewCard_category}>
+                {category}
+            </div>
+            <p className={style.viewCard_text}>Місце продажу</p>
             <div className={style.viewCard_location}>
                 {location}
             </div>

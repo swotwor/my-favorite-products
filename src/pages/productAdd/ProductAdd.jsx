@@ -41,7 +41,7 @@ const ProductAdd = () => {
             <p>Назва*</p>
             <input
                 type="text"
-                maxLength={30}
+                maxLength={50}
                 value={stateProduct.title}
                 onChange={(event) => handleInputChange(event, 'title')}
             />

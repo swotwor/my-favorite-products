@@ -9,8 +9,7 @@ export const resetData = async () => {
     try {
         const response = await ky
             .put(`${REQUEST_ADDRESS_MOCAPI}1`, {
-                json: {
-                    ...userDataExemple},
+                json: {...userDataExemple},
             })
             .json();
             console.log(response);

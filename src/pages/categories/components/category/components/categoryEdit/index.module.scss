@@ -1,0 +1,37 @@
+.categoryEdit {
+    &_input {
+        font-size: 24px;
+        background-color: white;
+        padding: 5px;
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    &_buttonBlock {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &_cancelButton, &_saveButton, &_deleteButton {
+        font-size: 26px;
+        padding: 5px 10px;
+        border-radius: 10px;
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+    
+    &_cancelButton {
+        background-color: rgba(0, 128, 0, .7);
+    }
+    
+    &_saveButton {
+        background-color: rgba(255, 166, 0, .7);
+    }
+    
+    &_deleteButton {
+        background-color: rgba(255, 0, 0, .7);
+    }
+}

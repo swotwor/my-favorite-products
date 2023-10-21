@@ -1,5 +1,5 @@
 import style from './index.module.scss';
-import Category from './components/categoryItem/components/category/Category';
+import Category from './components/category/Category';
 import AddCategory from './components/addCategory/AddCategory';
 import { useState } from 'react';
 

@@ -1,9 +1,12 @@
+import { returnCategoryTitle } from '../../../../helpers/helper';
 import style from './index.module.scss';
 import { useSelector } from 'react-redux';
 
 const ViewCard = ({ changeCardStatus }) => {
     const { currentProductCard } = useSelector(state => state.products);
+    const { categories } = useSelector(state => state.products.appData.dataBase);
     const { title, img, cost, description, location, category } = currentProductCard;
+    const categoryTitle = returnCategoryTitle(categories, category);
 
     return (
         <div className={style.viewCard}>
@@ -28,13 +31,18 @@ const ViewCard = ({ changeCardStatus }) => {
                         <p className={style.viewCard_text}>Опис товару</p>
                         <div className={style.viewCard_productDescription}>{description}</div>
                       </>
-                    
                     : null
             }
-            <p className={style.viewCard_text}>Категорія товару</p>
-            <div className={style.viewCard_category}>
-                {category}
-            </div>
+            {
+                categoryTitle
+                    ? <>
+                        <p className={style.viewCard_text}>Категорія товару</p>
+                        <div className={style.viewCard_category}>
+                            {categoryTitle}
+                        </div>
+                      </>
+                    : null
+            }
             <p className={style.viewCard_text}>Місце продажу</p>
             <div className={style.viewCard_location}>
                 {location}

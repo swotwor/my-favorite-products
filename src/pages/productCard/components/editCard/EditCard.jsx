@@ -98,10 +98,10 @@ const EditCard = ({ changeCardStatus }) => {
                 {
                     categories.map((category) => 
                         <option
-                            key={category}
-                            value={category}
+                            key={category.id}
+                            value={category.id}
                         >
-                            {category}
+                            {category.title}
                         </option>
                     )
                 }

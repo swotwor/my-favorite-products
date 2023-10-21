@@ -71,7 +71,7 @@ export async function editCurrentProduct(stateProduct, dispatch, userData, chang
                     ...userData,
                     dataBase:{
                         ...userData.dataBase,
-                        productItems: [...newProductList]
+                        productItems: newProductList
                     }
                 },
             })
@@ -148,8 +148,6 @@ async function deleteProductInfoRequest(appData, productId, dispatch) {
         }
     })
 
-    console.log(filteredListProducts);
-
     try {
         const response = await ky
             .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
@@ -157,8 +155,8 @@ async function deleteProductInfoRequest(appData, productId, dispatch) {
                     ...appData,
                     dataBase:{
                         ...appData.dataBase,
-                        productItems: [...filteredProducts],
-                        lists: [...filteredListProducts]
+                        productItems: filteredProducts,
+                        lists: filteredListProducts,
                     }
                 },
             })
@@ -226,27 +224,28 @@ export async function checkUserInDataBase(dispatch) {
         dataBase: {
             productItems: [],
             categories: [
-                'Алкоголь',
-                'Балаклія',
-                'Гігієна',
-                'Заморозка',
-                'Зоотовари',
-                'Йогурти',
-                'Ковбаси',
-                'Консервація',
-                'Кулінарія',
-                'Молоко Яйця',
-                'Морепродукти',
-                'Морозиво',
-                "М'ясні вироби",
-                'Печиво',
-                'Солодощі',
-                'Снеки',
-                'Соки Води',
-                'Соуси',
-                'Сири',
-                'Хімія',
-                'Чай Кава',
+                {id: 1, title: 'Алкоголь'},
+                {id: 2, title: 'Балаклія'},
+                {id: 3, title: 'Гігієна'},
+                {id: 4, title: 'Заморозка'},
+                {id: 5, title: 'Зоотовари'},
+                {id: 6, title: 'Йогурти'},
+                {id: 7, title: 'Ковбаси'},
+                {id: 8, title: 'Консервація'},
+                {id: 9, title: 'Кулінарія'},
+                {id: 10, title: 'Молоко Яйця'},
+                {id: 11, title: 'Морепродукти'},
+                {id: 12, title: 'Морозиво'},
+                {id: 13, title: "М'ясні вироби"},
+                {id: 14, title: 'Печиво'},
+                {id: 15, title: 'Сири'},
+                {id: 16, title: 'Снеки'},
+                {id: 17, title: 'Соки Води'},
+                {id: 18, title: 'Солодощі'},
+                {id: 19, title: 'Соуси'},
+                {id: 20, title: 'Спеції'},
+                {id: 21, title: 'Хімія'},
+                {id: 22, title: 'Чай Кава'},
             ],
             lists: [],
             recipes: [],
@@ -329,9 +328,7 @@ export async function editListRequest(dispatch, listState, appData, handleClickO
                     ...appData,
                     dataBase:{
                         ...appData.dataBase,
-                        lists: [
-                            ...newLists,
-                        ]
+                        lists: newLists,
                     }
                 },
             })
@@ -356,9 +353,7 @@ export async function deleteListRequest(dispatch, id, appData) {
                     ...appData,
                     dataBase:{
                         ...appData.dataBase,
-                        lists: [
-                            ...newLists,
-                        ]
+                        lists: newLists,
                     }
                 },
             })
@@ -373,7 +368,18 @@ export async function deleteListRequest(dispatch, id, appData) {
 }
 
 export async function addCategoryRequest (dispatch, appData, categoryName, setAddtMode) {
+    const categories = appData.dataBase.categories;
+
+    const lasCategoryId = () => {
+        if (categories.length) {
+            return +categories[categories.length - 1].id  + 1;
+        } else {
+            return 1
+        }
+    }
+
     dispatch(setLoader());
+
     try {
         const response = await ky
             .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
@@ -383,7 +389,10 @@ export async function addCategoryRequest (dispatch, appData, categoryName, setAd
                         ...appData.dataBase,
                         categories: [
                             ...appData.dataBase.categories,
-                            categoryName,
+                            {
+                                id: lasCategoryId(),
+                                title: categoryName,
+                            }
                         ]
                     }
                 },
@@ -395,5 +404,63 @@ export async function addCategoryRequest (dispatch, appData, categoryName, setAd
     } catch (error) {
         dispatch(setLoader());
         console.log(error);
+    }
+}
+
+export async function editCategoryRequest(dispatch, currentCategory, appData, setIdCategoryEdit) {
+    dispatch(setLoader());
+    const newCategories = appData.dataBase.categories.map(item => {
+        if(item.id == currentCategory.id) {
+            return currentCategory;
+        } else {
+            return item;
+        }
+    });
+
+    try {
+        const response = await ky
+            .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
+                json: {
+                    ...appData,
+                    dataBase:{
+                        ...appData.dataBase,
+                        categories: newCategories
+                    }
+                },
+            })
+            .json();
+        dispatch(setEditAppData(response));
+        dispatch(setLoader());
+        setIdCategoryEdit('');
+    } catch (error) {
+        dispatch(setLoader());
+        setIdCategoryEdit('');
+        alert(error);
+    }
+}
+
+export async function deleteCategoryRequest(dispatch, currentCategory, appData, setIdCategoryEdit) {
+    dispatch(setLoader());
+    const newCategories = appData.dataBase.categories.filter(filterItem => filterItem.id !== currentCategory.id);
+
+    try {
+        const response = await ky
+            .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
+                json: {
+                    ...appData,
+                    dataBase:{
+                        ...appData.dataBase,
+                        categories: newCategories
+                    }
+                },
+            })
+            .json();
+        dispatch(setEditAppData(response));
+        dispatch(setLoader());
+        setIdCategoryEdit('')
+    } catch (error) {
+        dispatch(setLoader());
+        setIdCategoryEdit('');
+        alert(error);
     }
 }

@@ -12,7 +12,6 @@ const AddCategory = ({ setAddtMode }) => {
         if (categoryName.trim) {
             addCategoryRequest(dispatch, state.appData, categoryName, setAddtMode)
         }
-
     };
     const handleClickOnCancel = () => {
         setAddtMode(false);
@@ -22,6 +21,7 @@ const AddCategory = ({ setAddtMode }) => {
         <div className={style.addCategoryWrapper}>
             <input
                 type="text"
+                maxLength={30}
                 value={categoryName}
                 onChange={(event) => setCategoryName(event.target.value)}
                 className={style.addCategoryWrapper}

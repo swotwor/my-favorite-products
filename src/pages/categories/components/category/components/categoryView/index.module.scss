@@ -1,10 +1,7 @@
-.categoryWrapper {
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.5);
-    padding: 10px 5px;
-    border-radius: 10px;
-
+.categoryView {
     &_item {
+        display: flex;
+        justify-content: space-between;
         background-color: rgba(255, 255, 255, 0.4);
         margin-bottom: 15px;
         font-size: 26px;
@@ -15,5 +12,11 @@
         &:last-child {
             margin-bottom: 0;
         }
+    }
+
+    &_icon {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
     }
 }

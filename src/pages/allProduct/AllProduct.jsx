@@ -1,19 +1,12 @@
 import style from './index.module.scss';
-import ViewCard from '../../components/productCard/ViewCard';
-import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
-import { setCurrentProductCard } from '../../store/store';
-import { useDispatch, useSelector } from 'react-redux';
+import ProductItem from './components/productItem/ProductItem';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const AllProduct = () => {
-    const dispatch = useDispatch();
+    const [openCategory, setOpenCategory] = useState('');
     const app = useSelector((state) => state.products.appData.dataBase);
     const isAuth = document.cookie.split(';')[0].split('=')[1];
-
-    const handleClick = (productItem) => {
-        dispatch(setCurrentProductCard(productItem));
-        sessionStorage.setItem('productItem', JSON.stringify(productItem));
-    }
 
     useEffect(() => {
         sessionStorage.removeItem('productItem');
@@ -27,12 +20,14 @@ const AllProduct = () => {
             {
                 isAuth
                     ? app.productItems.length
-                        ? app.productItems.map(productItem => {
-                            return (
-                                <Link to='/product_card' key={productItem.id} onClick={() => handleClick(productItem)}>
-                                    <ViewCard productItem={productItem}/>
-                                </Link>
-                            );
+                        ? app.categories.map((item) => {
+                            return <ProductItem
+                                key={item.id}
+                                item={item}
+                                products={app.productItems}
+                                openCategory={openCategory}
+                                setOpenCategory={setOpenCategory}
+                            />
                           })
                         : <p className={style.allProduct_noProducts}>Ще немає продуктів</p>
                     : <>
@@ -45,3 +40,21 @@ const AllProduct = () => {
 };
 
 export default AllProduct;
+
+
+
+
+// {
+//     isAuth
+//         ? app.productItems.length
+//             ? app.productItems.map(productItem => {
+//                 return (
+                   
+//                 );
+//               })
+//             : <p className={style.allProduct_noProducts}>Ще немає продуктів</p>
+//         : <>
+//             <p className={style.allProduct_noProducts}>Ви не авторизовані</p>
+//             <p className={style.allProduct_noProducts}>(натисніть на шестерню)</p>
+//           </>
+// }

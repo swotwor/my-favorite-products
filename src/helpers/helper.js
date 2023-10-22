@@ -1,7 +1,7 @@
-export function countInCategories(products, category) {
+export function countInCategories(products, categoryId) {
     let count = 0;
     products.forEach((element) =>
-        element.category === category ? count++ : null
+        element.category == categoryId ? count++ : null
     );
     return count;
 }
@@ -16,6 +16,7 @@ export function returnCategoryTitle(categories, id) {
 
 export function sortByTitle(categories) {
     const sortedArray = [...categories];
+
     sortedArray.sort((a, b) => {
         const titleA = a.title.toLowerCase();
         const titleB = b.title.toLowerCase();
@@ -31,3 +32,22 @@ export function sortByTitle(categories) {
 
     return sortedArray;
 }
+
+// export function sortCategories(app, ) {
+//     return app.categories.map((item) => {
+//         <div>
+//             <p>{item.title}</p>
+//             {openCategory == item.title ? (
+//                 <div>
+//                     <Link
+//                         to="/product_card"
+//                         key={productItem.id}
+//                         onClick={() => handleClick(productItem)}
+//                     >
+//                         <ViewCard productItem={productItem} />
+//                     </Link>
+//                 </div>
+//             ) : null}
+//         </div>;
+//     });
+// }

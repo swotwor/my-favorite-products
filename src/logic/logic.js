@@ -1,5 +1,5 @@
 import ky from 'ky';
-import { userDataExemple } from '../helpers/example';
+import { swotwor, userDataExemple } from '../helpers/example';
 import { REQUEST_ADDRESS_MOCAPI } from '../../state';
 import { setLoader, setEditAppData } from '../store/store';
 
@@ -9,26 +9,48 @@ export const resetData = async () => {
     try {
         const response = await ky
             .put(`${REQUEST_ADDRESS_MOCAPI}1`, {
-                json: {...userDataExemple},
+                json: { ...userDataExemple },
             })
             .json();
-            console.log(response);
+        console.log(response);
     } catch (error) {
         alert(error);
     }
-}
+};
 
-export async function addNewProduct(file = null, productInfo, dispatch, Resizer, userData) {
+// export const resetMyData = async () => {
+//     try {
+//         const response = await ky
+//             .post(`https://64ef3e20219b3e2873c42f34.mockapi.io/products`, {
+//                 json: swotwor,
+//             })
+//             .json();
+//         console.log(response);
+//     } catch (error) {
+//         alert(error);
+//     }
+// };
+
+export async function addNewProduct(
+    file = null,
+    productInfo,
+    dispatch,
+    Resizer,
+    userData
+) {
     dispatch(setLoader());
     const fileBeforCompression = await compressImage(file, Resizer);
-    const { link, deletehash } = await uploadImage(fileBeforCompression, dispatch);
+    const { link, deletehash } = await uploadImage(
+        fileBeforCompression,
+        dispatch
+    );
 
     try {
         const response = await ky
             .put(`${REQUEST_ADDRESS_MOCAPI}${userData.id}`, {
                 json: {
                     ...userData,
-                    dataBase:{
+                    dataBase: {
                         ...userData.dataBase,
                         productItems: [
                             ...userData.dataBase.productItems,
@@ -37,9 +59,9 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
                                 img: link,
                                 ...productInfo,
                                 deletehash,
-                            }
-                        ]
-                    }
+                            },
+                        ],
+                    },
                 },
             })
             .json();
@@ -52,9 +74,14 @@ export async function addNewProduct(file = null, productInfo, dispatch, Resizer,
     }
 }
 
-export async function editCurrentProduct(stateProduct, dispatch, userData, changeCardStatus) {
+export async function editCurrentProduct(
+    stateProduct,
+    dispatch,
+    userData,
+    changeCardStatus
+) {
     dispatch(setLoader());
-    const newProductList = userData.dataBase.productItems.map(item => {
+    const newProductList = userData.dataBase.productItems.map((item) => {
         if (item.id === stateProduct.id) {
             return {
                 ...stateProduct,
@@ -69,14 +96,17 @@ export async function editCurrentProduct(stateProduct, dispatch, userData, chang
             .put(`${REQUEST_ADDRESS_MOCAPI}${userData.id}`, {
                 json: {
                     ...userData,
-                    dataBase:{
+                    dataBase: {
                         ...userData.dataBase,
-                        productItems: newProductList
-                    }
+                        productItems: newProductList,
+                    },
                 },
             })
             .json();
-        sessionStorage.setItem('productItem', JSON.stringify(...newProductList));
+        sessionStorage.setItem(
+            'productItem',
+            JSON.stringify(...newProductList)
+        );
         dispatch(setEditAppData(response));
         dispatch(setLoader());
         changeCardStatus();
@@ -87,31 +117,43 @@ export async function editCurrentProduct(stateProduct, dispatch, userData, chang
 }
 
 export async function getAppData() {
-    const response = await ky
-    .get(`${REQUEST_ADDRESS_MOCAPI}`)
-    .json();
-    return response
+    const response = await ky.get(`${REQUEST_ADDRESS_MOCAPI}`).json();
+    return response;
 }
 
 export const extractTokenAndUsername = () => {
     const params = new URLSearchParams(window.location.hash.substring(1));
     const result = {};
-    
+
     for (const [key, value] of params.entries()) {
         result[key] = value;
     }
 
-    if(Object.keys(result).length) {
+    if (Object.keys(result).length) {
         document.cookie = `access_token=${result.access_token}`;
-        localStorage.setItem('userName', JSON.stringify(result.account_username));
+        localStorage.setItem(
+            'userName',
+            JSON.stringify(result.account_username)
+        );
         window.location.replace('/');
     }
-}
+};
 
-export async function deleteProductRequest(currentProductCard, appData, dispatch) {
+export async function deleteProductRequest(
+    currentProductCard,
+    appData,
+    dispatch
+) {
     dispatch(setLoader());
-    const deleteFoto = await deleteProductPhotoRequest(currentProductCard.deletehash, dispatch);
-    const deleteProductInfo = await deleteProductInfoRequest(appData, currentProductCard.id, dispatch);
+    const deleteFoto = await deleteProductPhotoRequest(
+        currentProductCard.deletehash,
+        dispatch
+    );
+    const deleteProductInfo = await deleteProductInfoRequest(
+        appData,
+        currentProductCard.id,
+        dispatch
+    );
 
     if (deleteFoto && deleteProductInfo.id) {
         dispatch(setEditAppData(deleteProductInfo));
@@ -126,13 +168,13 @@ export async function deleteProductRequest(currentProductCard, appData, dispatch
 async function deleteProductPhotoRequest(imageHash, dispatch) {
     try {
         const response = await ky
-        .delete(`https://api.imgur.com/3/image/${imageHash}`, {
-            headers: {
-                authorization: `Bearer ${access_token}`,
-            },
-        })
-        .json();
-        return response.success
+            .delete(`https://api.imgur.com/3/image/${imageHash}`, {
+                headers: {
+                    authorization: `Bearer ${access_token}`,
+                },
+            })
+            .json();
+        return response.success;
     } catch (error) {
         alert(error);
         dispatch(setLoader());
@@ -140,24 +182,28 @@ async function deleteProductPhotoRequest(imageHash, dispatch) {
 }
 
 async function deleteProductInfoRequest(appData, productId, dispatch) {
-    const filteredProducts = appData.dataBase.productItems.filter(item => item.id !== productId);
-    const filteredListProducts = appData.dataBase.lists.map(mapItem => {
+    const filteredProducts = appData.dataBase.productItems.filter(
+        (item) => item.id !== productId
+    );
+    const filteredListProducts = appData.dataBase.lists.map((mapItem) => {
         return {
             ...mapItem,
-            productList: mapItem.productList.filter(filterItem => filterItem.id !== productId)
-        }
-    })
+            productList: mapItem.productList.filter(
+                (filterItem) => filterItem.id !== productId
+            ),
+        };
+    });
 
     try {
         const response = await ky
             .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
                 json: {
                     ...appData,
-                    dataBase:{
+                    dataBase: {
                         ...appData.dataBase,
                         productItems: filteredProducts,
                         lists: filteredListProducts,
-                    }
+                    },
                 },
             })
             .json();
@@ -199,13 +245,13 @@ async function uploadImage(file, dispatch) {
 
     try {
         const response = await ky
-        .post('https://api.imgur.com/3/image/', {
-            headers: {
-                authorization: `Bearer ${access_token}`,
-            },
-            body: formData,
-        })
-        .json();
+            .post('https://api.imgur.com/3/image/', {
+                headers: {
+                    authorization: `Bearer ${access_token}`,
+                },
+                body: formData,
+            })
+            .json();
 
         return response.data;
     } catch (error) {
@@ -218,34 +264,36 @@ export async function checkUserInDataBase(dispatch) {
     const appData = await getAppData(); // получаем всех пользователей из базы данных
     const userName = localStorage.getItem('userName'); // после авторизации, получаем userName пользователя
     const parseUserName = JSON.parse(userName ? userName : null);
-    const isUserInDataBase = appData.filter(item => item.userName === parseUserName); // ищем пользователя в базе данных
+    const isUserInDataBase = appData.filter(
+        (item) => item.userName === parseUserName
+    ); // ищем пользователя в базе данных
     const productExample = {
         userName: JSON.parse(userName ? userName : null),
         dataBase: {
             productItems: [],
             categories: [
-                {id: 1, title: 'Алкоголь'},
-                {id: 2, title: 'Балаклія'},
-                {id: 3, title: 'Гігієна'},
-                {id: 4, title: 'Заморозка'},
-                {id: 5, title: 'Зоотовари'},
-                {id: 6, title: 'Йогурти'},
-                {id: 7, title: 'Ковбаси'},
-                {id: 8, title: 'Консервація'},
-                {id: 9, title: 'Кулінарія'},
-                {id: 10, title: 'Молоко Яйця'},
-                {id: 11, title: 'Морепродукти'},
-                {id: 12, title: 'Морозиво'},
-                {id: 13, title: "М'ясні вироби"},
-                {id: 14, title: 'Печиво'},
-                {id: 15, title: 'Сири'},
-                {id: 16, title: 'Снеки'},
-                {id: 17, title: 'Соки Води'},
-                {id: 18, title: 'Солодощі'},
-                {id: 19, title: 'Соуси'},
-                {id: 20, title: 'Спеції'},
-                {id: 21, title: 'Хімія'},
-                {id: 22, title: 'Чай Кава'},
+                { id: 1, title: 'Алкоголь' },
+                { id: 2, title: 'Балаклія' },
+                { id: 3, title: 'Гігієна' },
+                { id: 4, title: 'Заморозка' },
+                { id: 5, title: 'Зоотовари' },
+                { id: 6, title: 'Йогурти' },
+                { id: 7, title: 'Ковбаси' },
+                { id: 8, title: 'Консервація' },
+                { id: 9, title: 'Кулінарія' },
+                { id: 10, title: 'Молоко Яйця' },
+                { id: 11, title: 'Морепродукти' },
+                { id: 12, title: 'Морозиво' },
+                { id: 13, title: "М'ясні вироби" },
+                { id: 14, title: 'Печиво' },
+                { id: 15, title: 'Сири' },
+                { id: 16, title: 'Снеки' },
+                { id: 17, title: 'Соки Води' },
+                { id: 18, title: 'Солодощі' },
+                { id: 19, title: 'Соуси' },
+                { id: 20, title: 'Спеції' },
+                { id: 21, title: 'Хімія' },
+                { id: 22, title: 'Чай Кава' },
             ],
             lists: [],
             recipes: [],
@@ -254,51 +302,52 @@ export async function checkUserInDataBase(dispatch) {
 
     if (isUserInDataBase.length === 0 && !!access_token) {
         // если пользователя нет в базе данных но есть токен авторизации - создаем нового пользователя
-        console.log('Пользователя нет в базе данных')
+        console.log('Пользователя нет в базе данных');
         try {
             const response = await ky
                 .post(`${REQUEST_ADDRESS_MOCAPI}`, {
                     json: productExample,
                 })
                 .json();
-                dispatch(setEditAppData(response));
+            dispatch(setEditAppData(response));
         } catch (error) {
-            alert(error)
+            alert(error);
         }
     } else if (isUserInDataBase.length === 1 && !!access_token) {
         // если есть пользователь в базе данных и есть токен авторизации - загружаем данные в приложение
-        console.log('Пользователь есть в базе данных')
+        console.log('Пользователь есть в базе данных');
         dispatch(setEditAppData(isUserInDataBase[0]));
         localStorage.setItem('appData', JSON.stringify(isUserInDataBase));
     }
-
 }
 
 function extractImageId(url) {
     const parts = url.split('/');
     const lastPart = parts[parts.length - 1];
     const id = lastPart.split('.')[0];
-    return  id;
+    return id;
 }
 
 export function isProductSelected(listState, productCard) {
-    return listState.productList?.some(item => item.id === productCard);
+    return listState.productList?.some((item) => item.id === productCard);
 }
 
-export async function addListRequest (dispatch, listState, appData, setAddtMode) {
+export async function addListRequest(
+    dispatch,
+    listState,
+    appData,
+    setAddtMode
+) {
     dispatch(setLoader());
     try {
         const response = await ky
             .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
                 json: {
                     ...appData,
-                    dataBase:{
+                    dataBase: {
                         ...appData.dataBase,
-                        lists: [
-                            ...appData.dataBase.lists,
-                            listState,
-                        ]
-                    }
+                        lists: [...appData.dataBase.lists, listState],
+                    },
                 },
             })
             .json();
@@ -311,10 +360,15 @@ export async function addListRequest (dispatch, listState, appData, setAddtMode)
     }
 }
 
-export async function editListRequest(dispatch, listState, appData, handleClickOnEditList) {
+export async function editListRequest(
+    dispatch,
+    listState,
+    appData,
+    handleClickOnEditList
+) {
     dispatch(setLoader());
-    const newLists = appData.dataBase.lists.map(item => {
-        if(item.id === listState.id) {
+    const newLists = appData.dataBase.lists.map((item) => {
+        if (item.id === listState.id) {
             return listState;
         } else {
             return item;
@@ -326,10 +380,10 @@ export async function editListRequest(dispatch, listState, appData, handleClickO
             .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
                 json: {
                     ...appData,
-                    dataBase:{
+                    dataBase: {
                         ...appData.dataBase,
                         lists: newLists,
-                    }
+                    },
                 },
             })
             .json();
@@ -344,17 +398,19 @@ export async function editListRequest(dispatch, listState, appData, handleClickO
 
 export async function deleteListRequest(dispatch, id, appData) {
     dispatch(setLoader());
-    const newLists = appData.dataBase.lists.filter(filterItem => filterItem.id !== id);
+    const newLists = appData.dataBase.lists.filter(
+        (filterItem) => filterItem.id !== id
+    );
 
     try {
         const response = await ky
             .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
                 json: {
                     ...appData,
-                    dataBase:{
+                    dataBase: {
                         ...appData.dataBase,
                         lists: newLists,
-                    }
+                    },
                 },
             })
             .json();
@@ -367,16 +423,21 @@ export async function deleteListRequest(dispatch, id, appData) {
     }
 }
 
-export async function addCategoryRequest (dispatch, appData, categoryName, setAddtMode) {
+export async function addCategoryRequest(
+    dispatch,
+    appData,
+    categoryName,
+    setAddtMode
+) {
     const categories = appData.dataBase.categories;
 
     const lasCategoryId = () => {
         if (categories.length) {
-            return +categories[categories.length - 1].id  + 1;
+            return +categories[categories.length - 1].id + 1;
         } else {
-            return 1
+            return 1;
         }
-    }
+    };
 
     dispatch(setLoader());
 
@@ -385,16 +446,16 @@ export async function addCategoryRequest (dispatch, appData, categoryName, setAd
             .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
                 json: {
                     ...appData,
-                    dataBase:{
+                    dataBase: {
                         ...appData.dataBase,
                         categories: [
                             ...appData.dataBase.categories,
                             {
                                 id: lasCategoryId(),
                                 title: categoryName,
-                            }
-                        ]
-                    }
+                            },
+                        ],
+                    },
                 },
             })
             .json();
@@ -407,10 +468,15 @@ export async function addCategoryRequest (dispatch, appData, categoryName, setAd
     }
 }
 
-export async function editCategoryRequest(dispatch, currentCategory, appData, setIdCategoryEdit) {
+export async function editCategoryRequest(
+    dispatch,
+    currentCategory,
+    appData,
+    setIdCategoryEdit
+) {
     dispatch(setLoader());
-    const newCategories = appData.dataBase.categories.map(item => {
-        if(item.id == currentCategory.id) {
+    const newCategories = appData.dataBase.categories.map((item) => {
+        if (item.id == currentCategory.id) {
             return currentCategory;
         } else {
             return item;
@@ -422,10 +488,10 @@ export async function editCategoryRequest(dispatch, currentCategory, appData, se
             .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
                 json: {
                     ...appData,
-                    dataBase:{
+                    dataBase: {
                         ...appData.dataBase,
-                        categories: newCategories
-                    }
+                        categories: newCategories,
+                    },
                 },
             })
             .json();
@@ -439,25 +505,32 @@ export async function editCategoryRequest(dispatch, currentCategory, appData, se
     }
 }
 
-export async function deleteCategoryRequest(dispatch, currentCategory, appData, setIdCategoryEdit) {
+export async function deleteCategoryRequest(
+    dispatch,
+    currentCategory,
+    appData,
+    setIdCategoryEdit
+) {
     dispatch(setLoader());
-    const newCategories = appData.dataBase.categories.filter(filterItem => filterItem.id !== currentCategory.id);
+    const newCategories = appData.dataBase.categories.filter(
+        (filterItem) => filterItem.id !== currentCategory.id
+    );
 
     try {
         const response = await ky
             .put(`${REQUEST_ADDRESS_MOCAPI}${appData.id}`, {
                 json: {
                     ...appData,
-                    dataBase:{
+                    dataBase: {
                         ...appData.dataBase,
-                        categories: newCategories
-                    }
+                        categories: newCategories,
+                    },
                 },
             })
             .json();
         dispatch(setEditAppData(response));
         dispatch(setLoader());
-        setIdCategoryEdit('')
+        setIdCategoryEdit('');
     } catch (error) {
         dispatch(setLoader());
         setIdCategoryEdit('');

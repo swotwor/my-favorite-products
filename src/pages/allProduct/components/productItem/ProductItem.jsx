@@ -24,26 +24,24 @@ const ProductItem = ({ item, products, openCategory, setOpenCategory }) => {
     return (
         <div className={style.productItem}>
             <p
-                className={style.productItem_title}
                 onClick={() => handleClickOpenSpoyler(item.id)}
+                className={style.productItem_title}
             >
-                {item.title} {countInCategories(products, item.id)}
+                <a href="#servicios">{item.title} {countInCategories(products, item.id)}</a>
             </p>
             {
                 openCategory == item.id
                     ? products.map(productItem => {
                             if (productItem.category == item.id) {
-                                    return (
-                                            <div className={style.productItem_box} key={productItem.category}>
-                                    <Link
-                                        to="/product_card"
-                                        key={productItem.id}
-                                        onClick={() => handleClick(productItem)}
-                                    >
-                                        <ViewCard productItem={productItem} />
-                                    </Link>
-                                </div>
-                            )
+                                    return <div className={style.productItem_box} key={productItem.category} id="servicios">
+                                        <Link
+                                            to="/product_card"
+                                            key={productItem.id}
+                                            onClick={() => handleClick(productItem)}
+                                        >
+                                            <ViewCard productItem={productItem} />
+                                        </Link>
+                                    </div>
                         }
                       })
                     : null

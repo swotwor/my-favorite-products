@@ -30,24 +30,34 @@ const ProductItem = ({ item, products, openCategory, setOpenCategory }) => {
                 {item.title} {countInCategories(products, item.id)}
             </p>
             {
-                openCategory == item.id
-                    ? products.map(productItem => {
-                        if (productItem.category == item.id) {
-                            return (
-                                <div className={style.productItem_box} key={productItem.category}>
-                                    <Link
-                                        to="/product_card"
-                                        key={productItem.id}
-                                        onClick={() => handleClick(productItem)}
-                                    >
-                                        <ViewCard productItem={productItem} />
-                                    </Link>
-                                </div>
-                            )
-                        }
-                      })
-                    : null
-            }
+                products.map(productItem => {
+                    return <Link
+                        to="/product_card"
+                        key={productItem.id}
+                        onClick={() => handleClick(productItem)}
+                    >
+                        <ViewCard productItem={productItem} />
+                    </Link>
+                })
+
+
+                    // ? products.map(productItem => {
+                        //     if (productItem.category == item.id) {
+                            //         return (
+                                //             <div className={style.productItem_box} key={productItem.category}>
+                    //                 <Link
+                    //                     to="/product_card"
+                    //                     key={productItem.id}
+                    //                     onClick={() => handleClick(productItem)}
+                    //                 >
+                    //                     <ViewCard productItem={productItem} />
+                    //                 </Link>
+                    //             </div>
+                    //         )
+                    //     }
+                    //   })
+                    // : null
+                    }
         </div>
     );
 };
